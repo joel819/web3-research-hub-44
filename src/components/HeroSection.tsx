@@ -1,7 +1,8 @@
-import { Twitter, Linkedin, Github, ArrowDown } from "lucide-react";
+import { Linkedin, Github, ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTypingEffect } from "@/hooks/useAnimations";
 import EditableField from "./EditableField";
+import { XIcon } from "@/components/XIcon";
 
 const FaReddit = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
@@ -122,7 +123,7 @@ const HeroSection = ({ data, isEditing, onUpdate }: HeroProps) => {
           </div>
         ) : (
           <div className="flex items-center justify-center gap-3">
-            <SocialIcon href={data.twitter}><Twitter size={18} /></SocialIcon>
+            <SocialIcon href={data.twitter}><XIcon size={18} /></SocialIcon>
             <SocialIcon href={data.linkedin}><Linkedin size={18} /></SocialIcon>
             <SocialIcon href={data.reddit}><FaReddit /></SocialIcon>
             <SocialIcon href={data.github}><Github size={18} /></SocialIcon>
