@@ -81,7 +81,7 @@ const Index = () => {
   };
   const addTool = () => setData((d: typeof defaultData) => ({ ...d, tools: [...d.tools, { name: "New Tool", description: "Description", link: "#" }] }));
   const removeTool = (i: number) => setData((d: typeof defaultData) => ({ ...d, tools: d.tools.filter((_: unknown, idx: number) => idx !== i) }));
-  const addResearch = () => setData((d: typeof defaultData) => ({ ...d, research: [...d.research, { title: "New Post", date: "2026-01-01", platform: "Mirror", link: "#" }] }));
+  const removeResearch = (i: number) => setData((d: typeof defaultData) => ({ ...d, research: d.research.filter((_: unknown, idx: number) => idx !== i) }));
   const contentRef = useRef<HTMLDivElement>(null);
 
   const exportPDF = useCallback(async () => {
