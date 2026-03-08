@@ -137,7 +137,7 @@ const Index = () => {
       </div>
 
 
-      <div className="relative z-10 max-w-4xl mx-auto px-6 py-20">
+      <div ref={contentRef} className="relative z-10 max-w-4xl mx-auto px-6 py-20">
         {/* Header */}
         <ScrollReveal>
           <header className="text-center mb-16">
