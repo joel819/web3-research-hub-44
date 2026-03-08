@@ -2,6 +2,7 @@ import { Linkedin, Github, ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTypingEffect } from "@/hooks/useAnimations";
 import EditableField from "./EditableField";
+import { XIcon } from "@/components/XIcon";
 
 const FaReddit = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
