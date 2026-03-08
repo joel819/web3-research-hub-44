@@ -15,9 +15,21 @@ interface ResearchCardProps {
   isEditing: boolean;
 }
 
+const platformStyles: Record<string, string> = {
+  reddit: "border-green-500/40 text-green-400 bg-green-500/10",
+  linkedin: "border-blue-500/40 text-blue-400 bg-blue-500/10",
+  twitter: "border-foreground/30 text-foreground bg-foreground/10",
+  x: "border-foreground/30 text-foreground bg-foreground/10",
+  mirror: "border-primary/30 text-primary bg-primary/10",
+  substack: "border-orange-500/40 text-orange-400 bg-orange-500/10",
+};
+
+const getPlatformStyle = (platform: string) =>
+  platformStyles[platform.toLowerCase()] || "border-primary/30 text-primary bg-primary/10";
+
 const ResearchCard = ({ research, onChange, isEditing }: ResearchCardProps) => {
   return (
-    <div className="glass-card p-5 group hover:border-primary/30 transition-all duration-300 flex items-center justify-between gap-4">
+    <div className="glass-card p-5 group hover:border-primary/20 transition-all duration-300 flex items-center justify-between gap-4">
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-3 mb-1 flex-wrap">
           <EditableField
@@ -30,7 +42,9 @@ const ResearchCard = ({ research, onChange, isEditing }: ResearchCardProps) => {
           {isEditing ? (
             <EditableField value={research.platform} onChange={(v) => onChange("platform", v)} isEditing={isEditing} placeholder="Platform" />
           ) : (
-            <Badge variant="outline" className="border-primary/30 text-primary text-xs shrink-0">{research.platform}</Badge>
+            <Badge variant="outline" className={`text-xs shrink-0 ${getPlatformStyle(research.platform)}`}>
+              {research.platform}
+            </Badge>
           )}
         </div>
         <div className="flex items-center gap-3">
