@@ -1,4 +1,5 @@
-import { Twitter, Linkedin, Github } from "lucide-react";
+import { Linkedin, Github } from "lucide-react";
+import { XIcon } from "@/components/XIcon";
 
 interface FooterProps {
   name: string;
@@ -18,7 +19,7 @@ const Footer = ({ name, since, twitter, linkedin, github }: FooterProps) => {
         <div className="flex items-center gap-4">
           {twitter && (
             <a href={twitter} target="_blank" rel="noopener noreferrer" className="text-muted-foreground/50 hover:text-foreground transition-colors">
-              <Twitter size={16} />
+              <XIcon size={16} />
             </a>
           )}
           {linkedin && (

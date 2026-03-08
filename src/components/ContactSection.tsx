@@ -1,4 +1,5 @@
-import { Twitter, Linkedin, Mail } from "lucide-react";
+import { Linkedin, Mail } from "lucide-react";
+import { XIcon } from "@/components/XIcon";
 import { Button } from "@/components/ui/button";
 import EditableField from "./EditableField";
 import ScrollReveal from "./ScrollReveal";
@@ -42,7 +43,7 @@ const ContactSection = ({ contactText, contactEmail, contactTwitter, contactLink
             <div className="flex items-center justify-center gap-4 flex-wrap">
               {contactTwitter && (
                 <Button asChild variant="outline" className="border-border/50 hover:border-primary/40 hover:bg-primary/5 gap-2 px-6 py-5">
-                  <a href={contactTwitter} target="_blank" rel="noopener noreferrer"><Twitter size={18} /> DM on X</a>
+                  <a href={contactTwitter} target="_blank" rel="noopener noreferrer"><XIcon size={18} /> DM on X</a>
                 </Button>
               )}
               {contactLinkedin && (
