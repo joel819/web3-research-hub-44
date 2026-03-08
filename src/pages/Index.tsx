@@ -1,23 +1,25 @@
-import { useState, useEffect, useRef, useCallback } from "react";
-import { Edit3, Eye, Plus, Trash2, Download } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Edit3, Eye, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
-import EditableField from "@/components/EditableField";
+import Navbar from "@/components/Navbar";
+import HeroSection from "@/components/HeroSection";
 import StatsBar from "@/components/StatsBar";
+import ProcessSection from "@/components/ProcessSection";
 import ToolCard from "@/components/ToolCard";
 import ResearchCard from "@/components/ResearchCard";
-import Avatar from "@/components/Avatar";
-import SocialLinks from "@/components/SocialLinks";
-import SectionHeader from "@/components/SectionHeader";
+import EcosystemsSection from "@/components/EcosystemsSection";
+import OpenToSection from "@/components/OpenToSection";
 import ContactSection from "@/components/ContactSection";
+import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
-import heroBg from "@/assets/hero-bg.jpg";
+import SectionHeader from "@/components/SectionHeader";
 
-const STORAGE_KEY = "web3-portfolio-data";
+const STORAGE_KEY = "web3-portfolio-v2";
 
 const defaultData = {
   name: "0xResearcher",
-  bio: "Independent Web3 researcher & tool builder. Dissecting protocols so you don't have to.",
+  bio: "I help teams, DAOs, and funds navigate Web3 complexity. My work combines deep smart contract analysis with on-chain data forensics to surface real insights — not narratives. Everything I publish is transparent, verifiable, and built to help you make better decisions.",
+  roles: ["Web3 Researcher", "Tool Builder", "Automation Engineer"],
   twitter: "https://twitter.com",
   linkedin: "https://linkedin.com",
   reddit: "https://reddit.com",
@@ -25,25 +27,30 @@ const defaultData = {
   stats: [
     { label: "Projects Researched", value: "47" },
     { label: "Tools Built", value: "12" },
-    { label: "Weeks Active", value: "86" },
+    { label: "Weeks Building", value: "86" },
     { label: "Posts Published", value: "31" },
   ],
+  processSteps: ProcessSection.defaultSteps,
   tools: [
-    { name: "TokenScope", description: "Real-time token contract analyzer that flags common rug-pull patterns and suspicious permissions.", link: "#" },
-    { name: "ChainMap", description: "Visual mapping tool for tracing fund flows across multiple EVM-compatible chains.", link: "#" },
-    { name: "GovWatch", description: "Dashboard tracking governance proposals across major DAOs with voting trend analysis.", link: "#" },
+    { name: "TokenScope", description: "Real-time token contract analyzer that flags common rug-pull patterns, suspicious permissions, and honeypot indicators.", tags: ["Solidity", "React", "Ethers.js"], link: "#", featured: true },
+    { name: "ChainMap", description: "Visual mapping tool for tracing fund flows across multiple EVM-compatible chains with interactive graph visualization.", tags: ["D3.js", "Node.js", "GraphQL"], link: "#", featured: false },
+    { name: "GovWatch", description: "Dashboard tracking governance proposals across major DAOs with voting trend analysis and whale alert notifications.", tags: ["Python", "Next.js", "PostgreSQL"], link: "#", featured: true },
+    { name: "MEV Scanner", description: "Automated scanner that detects and categorizes MEV extraction patterns across Ethereum and L2 networks.", tags: ["Rust", "WebSocket", "Redis"], link: "#", featured: false },
   ],
   research: [
-    { title: "Deep Dive: Restaking Protocol Risk Analysis", date: "2026-03-01", platform: "Mirror", link: "#" },
-    { title: "The State of L2 Sequencer Decentralization", date: "2026-02-18", platform: "Reddit", link: "#" },
-    { title: "MEV on Solana: A Comparative Study", date: "2026-02-05", platform: "Twitter", link: "#" },
-    { title: "Analyzing Bridge Security Post-2025 Exploits", date: "2026-01-22", platform: "LinkedIn", link: "#" },
-    { title: "DePIN Tokenomics: What Actually Works", date: "2026-01-10", platform: "Substack", link: "#" },
+    { title: "Deep Dive: Restaking Protocol Risk Analysis", date: "2026-03-01", platform: "Blog", excerpt: "A comprehensive risk framework for evaluating restaking protocols, examining slashing conditions, operator incentives, and systemic risk vectors.", link: "#" },
+    { title: "The State of L2 Sequencer Decentralization", date: "2026-02-18", platform: "Reddit", excerpt: "Analysis of sequencer architectures across major L2s — how close are we to credible decentralization?", link: "#" },
+    { title: "MEV on Solana: A Comparative Study", date: "2026-02-05", platform: "Twitter", excerpt: "How MEV extraction on Solana differs from Ethereum, and what it means for the average user.", link: "#" },
+    { title: "Analyzing Bridge Security Post-2025 Exploits", date: "2026-01-22", platform: "LinkedIn", excerpt: "Lessons learned from the latest bridge exploits and the evolution of cross-chain security models.", link: "#" },
+    { title: "DePIN Tokenomics: What Actually Works", date: "2026-01-10", platform: "Blog", excerpt: "Separating signal from noise in DePIN token design — which incentive models are sustainable?", link: "#" },
   ],
-  about: "My research process starts with smart contract audits and on-chain data analysis. I trace fund flows, examine governance structures, and stress-test tokenomics models. Every project gets evaluated through a framework covering security, decentralization, sustainability, and team credibility. I publish my findings transparently so others can verify and build on them.",
-  contactText: "Open to collaborations on protocol research, security audits, and tool development. If you're building something interesting in Web3, let's talk.",
+  ecosystems: EcosystemsSection.defaultEcosystems,
+  collabs: OpenToSection.defaultCollabs,
+  contactText: "I'm always interested in connecting with teams building meaningful infrastructure in Web3. Whether you need independent research, custom tooling, or a strategic analysis partner — let's talk.",
   contactEmail: "researcher@example.com",
   contactTwitter: "https://twitter.com/messages",
+  contactLinkedin: "https://linkedin.com",
+  since: "2024",
 };
 
 const loadData = () => {
@@ -63,203 +70,221 @@ const Index = () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   }, [data]);
 
-  const updateField = (field: string, value: string) => setData((d: typeof defaultData) => ({ ...d, [field]: value }));
-  const updateStat = (index: number, value: string) => {
-    const stats = [...data.stats];
-    stats[index] = { ...stats[index], value };
-    setData((d: typeof defaultData) => ({ ...d, stats }));
-  };
-  const updateTool = (index: number, field: string, value: string) => {
-    const tools = [...data.tools];
-    tools[index] = { ...tools[index], [field]: value };
-    setData((d: typeof defaultData) => ({ ...d, tools }));
-  };
-  const updateResearch = (index: number, field: string, value: string) => {
-    const research = [...data.research];
-    research[index] = { ...research[index], [field]: value };
-    setData((d: typeof defaultData) => ({ ...d, research }));
-  };
-  const addTool = () => setData((d: typeof defaultData) => ({ ...d, tools: [...d.tools, { name: "New Tool", description: "Description", link: "#" }] }));
-  const removeTool = (i: number) => setData((d: typeof defaultData) => ({ ...d, tools: d.tools.filter((_: unknown, idx: number) => idx !== i) }));
-  const addResearch = () => setData((d: typeof defaultData) => ({ ...d, research: [...d.research, { title: "New Post", date: "2026-01-01", platform: "Mirror", link: "#" }] }));
-  const removeResearch = (i: number) => setData((d: typeof defaultData) => ({ ...d, research: d.research.filter((_: unknown, idx: number) => idx !== i) }));
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  const exportPDF = useCallback(async () => {
-    const el = contentRef.current;
-    if (!el) return;
-    toast.info("Generating PDF…");
-    try {
-      const html2canvas = (await import("html2canvas-pro")).default;
-      const { jsPDF } = await import("jspdf");
-      const canvas = await html2canvas(el, {
-        backgroundColor: "#0a0c10",
-        scale: 2,
-        useCORS: true,
-      });
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF({ orientation: "portrait", unit: "px", format: [canvas.width / 2, canvas.height / 2] });
-      pdf.addImage(imgData, "PNG", 0, 0, canvas.width / 2, canvas.height / 2);
-      pdf.save(`${data.name.replace(/\s+/g, "_")}_portfolio.pdf`);
-      toast.success("PDF downloaded!");
-    } catch (err) {
-      console.error(err);
-      toast.error("Failed to generate PDF");
+  const u = (field: string, value: string) => {
+    if (field === "roles") {
+      setData((d: typeof defaultData) => ({ ...d, roles: value.split(",").map((s) => s.trim()).filter(Boolean) }));
+    } else {
+      setData((d: typeof defaultData) => ({ ...d, [field]: value }));
     }
-  }, [data.name]);
+  };
+
+  const updateStat = (i: number, v: string) => {
+    setData((d: typeof defaultData) => {
+      const stats = [...d.stats];
+      stats[i] = { ...stats[i], value: v };
+      return { ...d, stats };
+    });
+  };
+
+  const updateProcess = (i: number, field: string, v: string) => {
+    setData((d: typeof defaultData) => {
+      const steps = [...d.processSteps];
+      steps[i] = { ...steps[i], [field]: v };
+      return { ...d, processSteps: steps };
+    });
+  };
+
+  const updateTool = (i: number, field: string, v: string) => {
+    setData((d: typeof defaultData) => {
+      const tools = [...d.tools];
+      if (field === "tags") {
+        tools[i] = { ...tools[i], tags: v.split(",").map((s) => s.trim()).filter(Boolean) };
+      } else {
+        tools[i] = { ...tools[i], [field]: v };
+      }
+      return { ...d, tools };
+    });
+  };
+
+  const toggleFeatured = (i: number) => {
+    setData((d: typeof defaultData) => {
+      const tools = [...d.tools];
+      tools[i] = { ...tools[i], featured: !tools[i].featured };
+      return { ...d, tools };
+    });
+  };
+
+  const addTool = () => setData((d: typeof defaultData) => ({
+    ...d, tools: [...d.tools, { name: "New Tool", description: "Description", tags: ["Tag"], link: "#", featured: false }]
+  }));
+  const removeTool = (i: number) => setData((d: typeof defaultData) => ({
+    ...d, tools: d.tools.filter((_: unknown, idx: number) => idx !== i)
+  }));
+
+  const updateResearch = (i: number, field: string, v: string) => {
+    setData((d: typeof defaultData) => {
+      const research = [...d.research];
+      research[i] = { ...research[i], [field]: v };
+      return { ...d, research };
+    });
+  };
+
+  const addResearch = () => setData((d: typeof defaultData) => ({
+    ...d, research: [...d.research, { title: "New Post", date: "2026-01-01", platform: "Blog", excerpt: "Short excerpt", link: "#" }]
+  }));
+  const removeResearch = (i: number) => setData((d: typeof defaultData) => ({
+    ...d, research: d.research.filter((_: unknown, idx: number) => idx !== i)
+  }));
+
+  const updateCollab = (i: number, field: string, v: string) => {
+    setData((d: typeof defaultData) => {
+      const collabs = [...d.collabs];
+      collabs[i] = { ...collabs[i], [field]: v };
+      return { ...d, collabs };
+    });
+  };
 
   return (
-    <div className="min-h-screen bg-background relative">
-      {/* Hero BG */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <img src={heroBg} alt="" className="w-full h-[600px] object-cover opacity-15" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/80 to-background" />
-      </div>
+    <div className="min-h-screen bg-background">
+      <Navbar name={data.name} />
 
-      {/* Controls */}
-      <div className="fixed top-6 right-6 z-50 flex gap-2">
-        {!isEditing && (
-          <Button
-            onClick={exportPDF}
-            variant="outline"
-            className="border-primary/30 bg-card/80 backdrop-blur-sm hover:bg-primary/10 hover:border-primary/50 text-foreground gap-2"
-          >
-            <Download size={16} /> PDF
-          </Button>
-        )}
+      {/* Edit Toggle */}
+      <div className="fixed bottom-6 right-6 z-50">
         <Button
           onClick={() => setIsEditing(!isEditing)}
-          variant="outline"
-          className="border-primary/30 bg-card/80 backdrop-blur-sm hover:bg-primary/10 hover:border-primary/50 text-foreground gap-2"
+          size="lg"
+          className={isEditing
+            ? "bg-primary hover:bg-primary/90 text-primary-foreground gap-2 shadow-lg shadow-primary/20"
+            : "bg-card/90 backdrop-blur-sm border border-border/50 hover:bg-card text-foreground gap-2 shadow-lg"
+          }
         >
-          {isEditing ? <Eye size={16} /> : <Edit3 size={16} />}
+          {isEditing ? <Eye size={18} /> : <Edit3 size={18} />}
           {isEditing ? "Preview" : "Edit"}
         </Button>
       </div>
 
+      {/* Hero */}
+      <HeroSection
+        data={{
+          name: data.name,
+          bio: data.bio,
+          roles: data.roles,
+          twitter: data.twitter,
+          linkedin: data.linkedin,
+          reddit: data.reddit,
+          github: data.github,
+        }}
+        isEditing={isEditing}
+        onUpdate={u}
+      />
 
-      <div ref={contentRef} className="relative z-10 max-w-4xl mx-auto px-6 py-20">
-        {/* Header */}
-        <ScrollReveal>
-          <header className="text-center mb-16">
-            <Avatar name={data.name} />
-            <EditableField
-              value={data.name}
-              onChange={(v) => updateField("name", v)}
-              isEditing={isEditing}
-              placeholder="Your name"
-              renderView={(v) => <h1 className="text-5xl md:text-6xl font-bold gradient-text mb-4">{v}</h1>}
-            />
-            <EditableField
-              value={data.bio}
-              onChange={(v) => updateField("bio", v)}
-              isEditing={isEditing}
-              placeholder="One-line bio"
-              renderView={(v) => <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">{v}</p>}
-            />
-            <SocialLinks
-              data={{ twitter: data.twitter, linkedin: data.linkedin, reddit: data.reddit, github: data.github }}
-              isEditing={isEditing}
-              onUpdate={updateField}
-            />
-          </header>
-        </ScrollReveal>
+      {/* Stats */}
+      <StatsBar stats={data.stats} onStatChange={updateStat} isEditing={isEditing} />
 
-        {/* Stats */}
-        <ScrollReveal>
-          <section className="mb-20">
-            <StatsBar stats={data.stats} onStatChange={updateStat} isEditing={isEditing} />
-          </section>
-        </ScrollReveal>
+      {/* Process */}
+      <ProcessSection steps={data.processSteps} isEditing={isEditing} onUpdate={updateProcess} />
 
-        {/* About */}
-        <ScrollReveal>
-          <section className="mb-20">
-            <SectionHeader title="About My Process" />
-            <div className="glass-card p-8">
-              <EditableField
-                value={data.about}
-                onChange={(v) => updateField("about", v)}
-                isEditing={isEditing}
-                multiline
-                placeholder="Describe your research process..."
-                renderView={(v) => <p className="text-muted-foreground leading-relaxed text-lg">{v}</p>}
-              />
+      {/* Tools */}
+      <section id="tools" className="section-padding">
+        <div className="max-w-6xl mx-auto px-6">
+          <ScrollReveal>
+            <div className="text-center mb-16">
+              <p className="text-sm text-primary font-mono uppercase tracking-widest mb-3">Portfolio</p>
+              <h2 className="text-3xl md:text-4xl font-bold font-display text-foreground">Tools I Built</h2>
             </div>
-          </section>
-        </ScrollReveal>
-
-        {/* Tools */}
-        <ScrollReveal>
-          <section className="mb-20">
-            <SectionHeader title="Tools I Built" />
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.tools.map((tool, i) => (
-                <ScrollReveal key={i} delay={i * 100}>
-                  <div className="relative">
-                    <ToolCard tool={tool} onChange={(f, v) => updateTool(i, f, v)} isEditing={isEditing} />
-                    {isEditing && (
-                      <button onClick={() => removeTool(i)} className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1 hover:scale-110 transition-transform">
-                        <Trash2 size={12} />
-                      </button>
-                    )}
-                  </div>
-                </ScrollReveal>
-              ))}
-            </div>
-            {isEditing && (
-              <Button onClick={addTool} variant="outline" className="mt-4 border-dashed border-border/50 text-muted-foreground hover:text-primary hover:border-primary/30 gap-2">
+          </ScrollReveal>
+          <div className="grid md:grid-cols-2 gap-6">
+            {data.tools.map((tool, i) => (
+              <ScrollReveal key={i} delay={i * 100}>
+                <div className="relative">
+                  <ToolCard
+                    tool={tool}
+                    onChange={(f, v) => updateTool(i, f, v)}
+                    onToggleFeatured={() => toggleFeatured(i)}
+                    isEditing={isEditing}
+                  />
+                  {isEditing && (
+                    <button
+                      onClick={() => removeTool(i)}
+                      className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1.5 hover:scale-110 transition-transform shadow-lg"
+                    >
+                      <Trash2 size={12} />
+                    </button>
+                  )}
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+          {isEditing && (
+            <div className="text-center mt-6">
+              <Button onClick={addTool} variant="outline" className="border-dashed border-border/50 text-muted-foreground hover:text-primary hover:border-primary/30 gap-2">
                 <Plus size={14} /> Add Tool
               </Button>
-            )}
-          </section>
-        </ScrollReveal>
-
-        {/* Research */}
-        <ScrollReveal>
-          <section className="mb-20">
-            <SectionHeader title="Recent Research" />
-            <div className="space-y-3">
-              {data.research.map((r, i) => (
-                <ScrollReveal key={i} delay={i * 80}>
-                  <div className="relative">
-                    <ResearchCard research={r} onChange={(f, v) => updateResearch(i, f, v)} isEditing={isEditing} />
-                    {isEditing && (
-                      <button onClick={() => removeResearch(i)} className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1 hover:scale-110 transition-transform">
-                        <Trash2 size={12} />
-                      </button>
-                    )}
-                  </div>
-                </ScrollReveal>
-              ))}
             </div>
-            {isEditing && (
-              <Button onClick={addResearch} variant="outline" className="mt-4 border-dashed border-border/50 text-muted-foreground hover:text-primary hover:border-primary/30 gap-2">
+          )}
+        </div>
+      </section>
+
+      {/* Research */}
+      <section id="research" className="section-padding bg-gradient-to-b from-transparent via-primary/[0.02] to-transparent">
+        <div className="max-w-4xl mx-auto px-6">
+          <ScrollReveal>
+            <div className="text-center mb-16">
+              <p className="text-sm text-primary font-mono uppercase tracking-widest mb-3">Publications</p>
+              <h2 className="text-3xl md:text-4xl font-bold font-display text-foreground">Recent Research</h2>
+            </div>
+          </ScrollReveal>
+          <div className="space-y-4">
+            {data.research.map((r, i) => (
+              <ScrollReveal key={i} delay={i * 80}>
+                <div className="relative">
+                  <ResearchCard research={r} onChange={(f, v) => updateResearch(i, f, v)} isEditing={isEditing} />
+                  {isEditing && (
+                    <button
+                      onClick={() => removeResearch(i)}
+                      className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1.5 hover:scale-110 transition-transform shadow-lg"
+                    >
+                      <Trash2 size={12} />
+                    </button>
+                  )}
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+          {isEditing && (
+            <div className="text-center mt-6">
+              <Button onClick={addResearch} variant="outline" className="border-dashed border-border/50 text-muted-foreground hover:text-primary hover:border-primary/30 gap-2">
                 <Plus size={14} /> Add Research
               </Button>
-            )}
-          </section>
-        </ScrollReveal>
+            </div>
+          )}
+        </div>
+      </section>
 
-        {/* Contact */}
-        <ScrollReveal>
-          <section className="mb-20">
-            <SectionHeader title="Contact & Collab" />
-            <ContactSection
-              contactText={data.contactText}
-              contactEmail={data.contactEmail}
-              contactTwitter={data.contactTwitter}
-              isEditing={isEditing}
-              onUpdate={updateField}
-            />
-          </section>
-        </ScrollReveal>
+      {/* Ecosystems */}
+      <EcosystemsSection ecosystems={data.ecosystems} />
 
-        {/* Footer */}
-        <footer className="text-center py-8 border-t border-border/30">
-          <p className="text-sm text-muted-foreground font-mono">built in public by {data.name}</p>
-        </footer>
-      </div>
+      {/* Open To */}
+      <OpenToSection collabs={data.collabs} isEditing={isEditing} onUpdate={updateCollab} />
+
+      {/* Contact */}
+      <ContactSection
+        contactText={data.contactText}
+        contactEmail={data.contactEmail}
+        contactTwitter={data.contactTwitter}
+        contactLinkedin={data.contactLinkedin}
+        isEditing={isEditing}
+        onUpdate={u}
+      />
+
+      {/* Footer */}
+      <Footer
+        name={data.name}
+        since={data.since}
+        twitter={data.twitter}
+        linkedin={data.linkedin}
+        github={data.github}
+      />
     </div>
   );
 };

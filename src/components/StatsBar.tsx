@@ -1,3 +1,4 @@
+import { useCountUp } from "@/hooks/useAnimations";
 import EditableField from "./EditableField";
 
 interface Stat {
@@ -11,24 +12,38 @@ interface StatsBarProps {
   isEditing: boolean;
 }
 
+const StatItem = ({ stat, isEditing, onChange }: { stat: Stat; isEditing: boolean; onChange: (v: string) => void }) => {
+  const numericValue = parseInt(stat.value) || 0;
+  const { count, ref } = useCountUp(numericValue, 1800);
+
+  return (
+    <div ref={ref} className="text-center px-4 py-6">
+      {isEditing ? (
+        <EditableField value={stat.value} onChange={onChange} isEditing placeholder="0" />
+      ) : (
+        <div className="text-4xl md:text-5xl font-bold font-mono text-primary glow-text mb-2">
+          {count}
+        </div>
+      )}
+      <div className="text-xs text-muted-foreground uppercase tracking-[0.2em] font-medium">{stat.label}</div>
+    </div>
+  );
+};
+
 const StatsBar = ({ stats, onStatChange, isEditing }: StatsBarProps) => {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-      {stats.map((stat, i) => (
-        <div key={i} className="glass-card glow-border p-6 text-center">
-          <EditableField
-            value={stat.value}
-            onChange={(v) => onStatChange(i, v)}
-            isEditing={isEditing}
-            placeholder="0"
-            renderView={(v) => (
-              <div className="text-3xl md:text-4xl font-bold font-mono text-primary glow-text">{v}</div>
-            )}
-          />
-          <div className="text-xs text-muted-foreground mt-2 uppercase tracking-widest">{stat.label}</div>
+    <section className="relative py-16">
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/[0.03] to-transparent" />
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="glass-card p-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-border/30">
+            {stats.map((stat, i) => (
+              <StatItem key={i} stat={stat} isEditing={isEditing} onChange={(v) => onStatChange(i, v)} />
+            ))}
+          </div>
         </div>
-      ))}
-    </div>
+      </div>
+    </section>
   );
 };
 
