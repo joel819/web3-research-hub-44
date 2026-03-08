@@ -82,7 +82,30 @@ const Index = () => {
   const addTool = () => setData((d: typeof defaultData) => ({ ...d, tools: [...d.tools, { name: "New Tool", description: "Description", link: "#" }] }));
   const removeTool = (i: number) => setData((d: typeof defaultData) => ({ ...d, tools: d.tools.filter((_: unknown, idx: number) => idx !== i) }));
   const addResearch = () => setData((d: typeof defaultData) => ({ ...d, research: [...d.research, { title: "New Post", date: "2026-01-01", platform: "Mirror", link: "#" }] }));
-  const removeResearch = (i: number) => setData((d: typeof defaultData) => ({ ...d, research: d.research.filter((_: unknown, idx: number) => idx !== i) }));
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const exportPDF = useCallback(async () => {
+    const el = contentRef.current;
+    if (!el) return;
+    toast.info("Generating PDF…");
+    try {
+      const html2canvas = (await import("html2canvas-pro")).default;
+      const { jsPDF } = await import("jspdf");
+      const canvas = await html2canvas(el, {
+        backgroundColor: "#0a0c10",
+        scale: 2,
+        useCORS: true,
+      });
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({ orientation: "portrait", unit: "px", format: [canvas.width / 2, canvas.height / 2] });
+      pdf.addImage(imgData, "PNG", 0, 0, canvas.width / 2, canvas.height / 2);
+      pdf.save(`${data.name.replace(/\s+/g, "_")}_portfolio.pdf`);
+      toast.success("PDF downloaded!");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to generate PDF");
+    }
+  }, [data.name]);
 
   return (
     <div className="min-h-screen bg-background relative">
@@ -92,8 +115,17 @@ const Index = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/80 to-background" />
       </div>
 
-      {/* Edit Toggle */}
-      <div className="fixed top-6 right-6 z-50">
+      {/* Controls */}
+      <div className="fixed top-6 right-6 z-50 flex gap-2">
+        {!isEditing && (
+          <Button
+            onClick={exportPDF}
+            variant="outline"
+            className="border-primary/30 bg-card/80 backdrop-blur-sm hover:bg-primary/10 hover:border-primary/50 text-foreground gap-2"
+          >
+            <Download size={16} /> PDF
+          </Button>
+        )}
         <Button
           onClick={() => setIsEditing(!isEditing)}
           variant="outline"
@@ -103,6 +135,7 @@ const Index = () => {
           {isEditing ? "Preview" : "Edit"}
         </Button>
       </div>
+
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 py-20">
         {/* Header */}
