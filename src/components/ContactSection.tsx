@@ -60,6 +60,14 @@ const ContactSection = ({ contactText, contactEmail, contactTwitter, contactLink
             </div>
           )}
         </ScrollReveal>
+
+        <ScrollReveal delay={250}>
+          <div className="mt-12 pt-10 border-t border-border/30">
+            <p className="text-sm text-muted-foreground font-mono uppercase tracking-widest mb-2 text-center">Stay Updated</p>
+            <p className="text-muted-foreground text-center mb-5">Get my latest research delivered to your inbox.</p>
+            <NewsletterForm />
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );
