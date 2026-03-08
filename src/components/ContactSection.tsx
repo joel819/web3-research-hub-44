@@ -3,6 +3,7 @@ import { XIcon } from "@/components/XIcon";
 import { Button } from "@/components/ui/button";
 import EditableField from "./EditableField";
 import ScrollReveal from "./ScrollReveal";
+import NewsletterForm from "./NewsletterForm";
 
 interface ContactSectionProps {
   contactText: string;
