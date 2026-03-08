@@ -118,17 +118,31 @@
   }
 
   .glass-card {
-    @apply bg-card/50 backdrop-blur-xl border border-border/40 rounded-xl;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    @apply backdrop-blur-xl border rounded-xl;
+    background: hsl(var(--card) / 0.5);
+    border-color: hsl(var(--border) / 0.4);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .light .glass-card {
+    background: hsl(var(--card) / 0.8);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.06);
   }
 
   .glass-card-hover {
     @apply glass-card transition-all duration-500;
   }
   .glass-card-hover:hover {
-    @apply border-primary/25;
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4), 0 0 20px -5px hsl(var(--glow) / 0.1);
+    border-color: hsl(var(--primary) / 0.25);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2), 0 0 20px -5px hsl(var(--glow) / 0.1);
     transform: translateY(-2px);
+  }
+  .light .glass-card-hover:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08), 0 0 15px -5px hsl(var(--glow) / 0.08);
+  }
+
+  .light .glow-text {
+    text-shadow: none;
   }
 
   .gradient-text {
