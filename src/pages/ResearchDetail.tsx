@@ -1,5 +1,6 @@
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Clock, ExternalLink, FileText, MessageSquare, BarChart3 } from "lucide-react";
+import { ArrowLeft, Clock, ExternalLink, FileText, MessageSquare, BarChart3, Share2 } from "lucide-react";
+import XIcon from "@/components/XIcon";
 import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
