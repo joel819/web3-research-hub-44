@@ -10,6 +10,7 @@ import "highlight.js/styles/github-dark.css";
 import type { ResearchType } from "@/components/ResearchCard";
 import TableOfContents, { parseHeadings } from "@/components/TableOfContents";
 import { slugify } from "@/lib/slugify";
+import CopyCodeBlock from "@/components/CopyCodeBlock";
 
 const STORAGE_KEY = "web3-portfolio-v2";
 
