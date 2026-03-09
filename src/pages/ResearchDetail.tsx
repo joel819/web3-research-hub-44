@@ -147,6 +147,29 @@ const ResearchDetail = () => {
                   )}
                 </div>
 
+                {/* Social sharing */}
+                <div className="flex items-center gap-2 mt-4">
+                  <span className="text-xs font-mono text-muted-foreground uppercase tracking-widest mr-1">Share</span>
+                  <a
+                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(research.title)}&url=${encodeURIComponent(window.location.href)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 rounded-md border border-border/30 text-muted-foreground hover:text-foreground hover:border-border/60 transition-colors"
+                    aria-label="Share on X"
+                  >
+                    <XIcon size={14} />
+                  </a>
+                  <a
+                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 rounded-md border border-border/30 text-muted-foreground hover:text-foreground hover:border-border/60 transition-colors"
+                    aria-label="Share on LinkedIn"
+                  >
+                    <Share2 size={14} />
+                  </a>
+                </div>
+
                 {research.excerpt && (
                   <p className="mt-4 text-lg text-muted-foreground leading-relaxed border-l-2 border-primary/40 pl-4">
                     {research.excerpt}
