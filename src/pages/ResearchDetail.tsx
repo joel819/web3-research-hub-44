@@ -12,6 +12,7 @@ import TableOfContents, { parseHeadings } from "@/components/TableOfContents";
 import { slugify } from "@/lib/slugify";
 import CopyCodeBlock from "@/components/CopyCodeBlock";
 import ReadingProgressBar from "@/components/ReadingProgressBar";
+import { calculateReadingTime } from "@/lib/readingTime";
 
 const STORAGE_KEY = "web3-portfolio-v2";
 
@@ -92,6 +93,7 @@ const ResearchDetail = () => {
   const cfg = typeConfig[type];
   const TypeIcon = cfg.icon;
   const body: string = research.body || DEFAULT_BODY;
+  const readTime = research.readTime || calculateReadingTime(body);
   const headings = parseHeadings(body);
 
   return (
@@ -131,12 +133,12 @@ const ResearchDetail = () => {
 
                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
                   <span className="font-mono">{research.date}</span>
-                  {research.readTime && (
+                  {readTime && (
                     <>
                       <span className="text-muted-foreground/30">·</span>
                       <span className="flex items-center gap-1.5">
                         <Clock size={13} />
-                        {research.readTime}
+                        {readTime}
                       </span>
                     </>
                   )}
