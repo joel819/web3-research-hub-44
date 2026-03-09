@@ -1,4 +1,5 @@
-import { ExternalLink, Plus, Trash2, FileText, MessageSquare, BarChart3, Clock } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ExternalLink, Plus, Trash2, FileText, MessageSquare, BarChart3, Clock, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import EditableField from "./EditableField";
@@ -17,6 +18,7 @@ export interface Research {
   links: PlatformLink[];
   type?: ResearchType;
   readTime?: string;
+  body?: string;
 }
 
 interface ResearchCardProps {
@@ -57,7 +59,7 @@ const ResearchCard = ({ research, index, onChange, onUpdateLink, onAddLink, onRe
   const cfg = typeConfig[type];
   const TypeIcon = cfg.icon;
 
-  return (
+  const cardContent = (
     <div className="glass-card-hover p-6 group relative overflow-hidden">
       {/* Background index number */}
       <span className="absolute right-4 top-3 text-6xl font-black text-foreground/[0.03] select-none font-display leading-none pointer-events-none">
@@ -99,6 +101,11 @@ const ResearchCard = ({ research, index, onChange, onUpdateLink, onAddLink, onRe
             )}
           />
         </div>
+
+        {/* Arrow hint in view mode */}
+        {!isEditing && (
+          <ArrowRight size={15} className="text-muted-foreground/30 group-hover:text-primary/60 group-hover:translate-x-0.5 transition-all shrink-0 mt-0.5" />
+        )}
       </div>
 
       {/* Meta row */}
@@ -139,7 +146,14 @@ const ResearchCard = ({ research, index, onChange, onUpdateLink, onAddLink, onRe
       {!isEditing && research.links.length > 0 && (
         <div className="flex flex-wrap gap-2 mt-2">
           {research.links.map((pl, i) => (
-            <a key={i} href={pl.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 transition-opacity hover:opacity-80">
+            <a
+              key={i}
+              href={pl.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="inline-flex items-center gap-1.5 transition-opacity hover:opacity-80"
+            >
               <Badge variant="outline" className={`text-[11px] font-medium gap-1 cursor-pointer ${getPlatformStyle(pl.platform)}`}>
                 {pl.platform} <ExternalLink size={10} />
               </Badge>
@@ -170,7 +184,30 @@ const ResearchCard = ({ research, index, onChange, onUpdateLink, onAddLink, onRe
           </Button>
         </div>
       )}
+
+      {/* Body markdown editor — edit mode only */}
+      {isEditing && (
+        <div className="mt-4 border-t border-border/20 pt-4">
+          <p className="text-xs text-muted-foreground font-mono uppercase tracking-wider mb-2">Article Body (Markdown)</p>
+          <textarea
+            value={research.body ?? ""}
+            onChange={(e) => onChange("body", e.target.value)}
+            placeholder="Write the full article body in Markdown..."
+            rows={8}
+            className="w-full bg-muted/20 border border-border/30 rounded-lg px-3 py-2 text-sm font-mono text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary/40 resize-y"
+          />
+        </div>
+      )}
     </div>
+  );
+
+  // In view mode wrap the whole card in a Link; in edit mode just render it plain
+  if (isEditing) return cardContent;
+
+  return (
+    <Link to={`/research/${index}`} className="block">
+      {cardContent}
+    </Link>
   );
 };
 
