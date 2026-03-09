@@ -59,6 +59,7 @@ const ResearchCard = ({ research, index, onChange, onUpdateLink, onAddLink, onRe
   const type = research.type ?? "article";
   const cfg = typeConfig[type];
   const TypeIcon = cfg.icon;
+  const readTime = research.readTime || (research.body ? calculateReadingTime(research.body) : "");
 
   const cardContent = (
     <div className="glass-card-hover p-6 group relative overflow-hidden">
@@ -118,7 +119,7 @@ const ResearchCard = ({ research, index, onChange, onUpdateLink, onAddLink, onRe
           placeholder="YYYY-MM-DD"
           renderView={(v) => <span className="text-xs text-muted-foreground font-mono">{v}</span>}
         />
-        {(research.readTime || isEditing) && (
+        {(readTime || isEditing) && (
           <>
             <span className="text-muted-foreground/30 text-xs">·</span>
             <Clock size={11} className="text-muted-foreground/50 shrink-0" />
@@ -127,7 +128,7 @@ const ResearchCard = ({ research, index, onChange, onUpdateLink, onAddLink, onRe
               onChange={(v) => onChange("readTime", v)}
               isEditing={isEditing}
               placeholder="e.g. 8 min read"
-              renderView={(v) => v ? <span className="text-xs text-muted-foreground/70 font-mono">{v}</span> : null}
+              renderView={(v) => v ? <span className="text-xs text-muted-foreground/70 font-mono">{v}</span> : <span className="text-xs text-muted-foreground/70 font-mono">{readTime}</span>}
             />
           </>
         )}
