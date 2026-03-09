@@ -32,6 +32,45 @@ export type Database = {
         }
         Relationships: []
       }
+      tools: {
+        Row: {
+          created_at: string
+          description: string
+          featured: boolean
+          id: string
+          link: string
+          long_description: string
+          name: string
+          screenshots: string[]
+          tags: string[]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          featured?: boolean
+          id: string
+          link?: string
+          long_description?: string
+          name: string
+          screenshots?: string[]
+          tags?: string[]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          featured?: boolean
+          id?: string
+          link?: string
+          long_description?: string
+          name?: string
+          screenshots?: string[]
+          tags?: string[]
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
