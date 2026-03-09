@@ -93,6 +93,7 @@ const ResearchDetail = () => {
   const cfg = typeConfig[type];
   const TypeIcon = cfg.icon;
   const body: string = research.body || DEFAULT_BODY;
+  const readTime = research.readTime || calculateReadingTime(body);
   const headings = parseHeadings(body);
 
   return (
