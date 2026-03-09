@@ -96,6 +96,7 @@ const ResearchDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <ReadingProgressBar />
       <Navbar name={data.name} />
 
       {/* Wide layout: article + TOC sidebar */}
