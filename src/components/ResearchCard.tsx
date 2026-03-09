@@ -3,6 +3,7 @@ import { ExternalLink, Plus, Trash2, FileText, MessageSquare, BarChart3, Clock, 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import EditableField from "./EditableField";
+import { calculateReadingTime } from "@/lib/readingTime";
 
 export interface PlatformLink {
   platform: string;
