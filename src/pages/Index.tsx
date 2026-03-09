@@ -207,7 +207,7 @@ const Index = () => {
   };
 
   const addResearch = () => setData((d: typeof defaultData) => ({
-    ...d, research: [...d.research, { title: "New Post", date: "2026-01-01", excerpt: "Short excerpt", links: [{ platform: "Blog", url: "#" }] }]
+    ...d, research: [...d.research, { title: "New Post", date: "2026-01-01", excerpt: "Short excerpt", links: [{ platform: "Blog", url: "#" }], type: "article" as ResearchType, readTime: "5 min read" }]
   }));
   const removeResearch = (i: number) => setData((d: typeof defaultData) => ({
     ...d, research: d.research.filter((_: unknown, idx: number) => idx !== i)
