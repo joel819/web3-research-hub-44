@@ -62,16 +62,13 @@ const loadData = () => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (!saved) return defaultData;
     const parsed = JSON.parse(saved);
-    // Migrate old research format (single link/platform → links array)
+    // Migrate old research format
     if (parsed.research) {
       parsed.research = parsed.research.map((r: any) => {
-        if (r.links) return r;
-        return {
-          title: r.title,
-          date: r.date,
-          excerpt: r.excerpt || "",
-          links: [{ platform: r.platform || "Blog", url: r.link || "#" }],
-        };
+        const withLinks = r.links
+          ? r
+          : { title: r.title, date: r.date, excerpt: r.excerpt || "", links: [{ platform: r.platform || "Blog", url: r.link || "#" }] };
+        return { type: "article", readTime: "", ...withLinks };
       });
     }
     // Migrate old tool format (screenshot → screenshots)
@@ -89,9 +86,12 @@ const loadData = () => {
   }
 };
 
+type FilterType = "all" | ResearchType;
+
 const Index = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [data, setData] = useState(loadData);
+  const [researchFilter, setResearchFilter] = useState<FilterType>("all");
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
