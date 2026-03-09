@@ -42,10 +42,12 @@ const platformStyles: Record<string, string> = {
 const getPlatformStyle = (platform: string) =>
   platformStyles[platform.toLowerCase()] || "border-primary/30 text-primary bg-primary/10 hover:bg-primary/20";
 
-const typeConfig: Record<ResearchType, { label: string; icon: React.ComponentType<{ size?: number; className?: string }>, style: string }> = {
-  article: { label: "Article", icon: FileText, style: "border-purple-500/30 text-purple-400 bg-purple-500/10" },
-  thread:  { label: "Thread",  icon: MessageSquare, style: "border-blue-500/30 text-blue-400 bg-blue-500/10" },
-  report:  { label: "Report",  icon: BarChart3, style: "border-primary/30 text-primary bg-primary/10" },
+import type { LucideIcon } from "lucide-react";
+
+const typeConfig: Record<ResearchType, { label: string; icon: LucideIcon; style: string }> = {
+  article: { label: "Article", icon: FileText,       style: "border-purple-500/30 text-purple-400 bg-purple-500/10" },
+  thread:  { label: "Thread",  icon: MessageSquare,  style: "border-blue-500/30 text-blue-400 bg-blue-500/10" },
+  report:  { label: "Report",  icon: BarChart3,       style: "border-primary/30 text-primary bg-primary/10" },
 };
 
 const TYPES: ResearchType[] = ["article", "thread", "report"];
