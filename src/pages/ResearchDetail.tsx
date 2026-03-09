@@ -193,9 +193,7 @@ const ResearchDetail = () => {
                       <em className="italic text-muted-foreground/80">{children}</em>
                     ),
                     pre: ({ children }) => (
-                      <pre className="rounded-xl border border-border/30 overflow-x-auto mb-6 text-sm font-mono bg-[#0d1117] p-4">
-                        {children}
-                      </pre>
+                      <CopyCodeBlock>{children}</CopyCodeBlock>
                     ),
                     code: ({ children, className }) => {
                       const isBlock = !!className;
