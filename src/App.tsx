@@ -8,6 +8,7 @@ import { AnimatePresence } from "framer-motion";
 import PageTransition from "@/components/PageTransition";
 import Index from "./pages/Index";
 import ToolDetail from "./pages/ToolDetail";
+import ResearchDetail from "./pages/ResearchDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -19,6 +20,7 @@ const AnimatedRoutes = () => {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageTransition><Index /></PageTransition>} />
         <Route path="/tool/:id" element={<PageTransition><ToolDetail /></PageTransition>} />
+        <Route path="/research/:index" element={<PageTransition><ResearchDetail /></PageTransition>} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>
