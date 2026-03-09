@@ -100,6 +100,7 @@ const ResearchDetail = () => {
   return (
     <div className="min-h-screen bg-background">
       <ReadingProgressBar />
+      <BackToTopButton />
       <Navbar name={data.name} />
 
       {/* Wide layout: article + TOC sidebar */}
