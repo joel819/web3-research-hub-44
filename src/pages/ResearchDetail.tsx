@@ -281,6 +281,44 @@ const ResearchDetail = () => {
                 </div>
               </ScrollReveal>
             )}
+
+            {/* Related articles */}
+            {(() => {
+              const allResearch = data?.research ?? [];
+              const related = allResearch.filter((_: any, i: number) => i !== idx).slice(0, 3);
+              if (related.length === 0) return null;
+              return (
+                <ScrollReveal>
+                  <div className="mt-12 pt-8 border-t border-border/20">
+                    <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-5">Related Articles</p>
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                      {related.map((r: any, i: number) => {
+                        const rIdx = allResearch.indexOf(r);
+                        const rType: ResearchType = r.type ?? "article";
+                        const rCfg = typeConfig[rType];
+                        const RIcon = rCfg.icon;
+                        return (
+                          <Link
+                            key={i}
+                            to={`/research/${rIdx}`}
+                            className="group block rounded-lg border border-border/20 bg-muted/20 p-4 hover:border-primary/30 hover:bg-muted/40 transition-all"
+                          >
+                            <Badge variant="outline" className={`text-[10px] font-mono gap-1 mb-2 ${rCfg.style}`}>
+                              <RIcon size={9} />
+                              {rCfg.label}
+                            </Badge>
+                            <h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2 mb-1">
+                              {r.title}
+                            </h3>
+                            <span className="text-xs text-muted-foreground font-mono">{r.date}</span>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </ScrollReveal>
+              );
+            })()}
           </div>
 
           {/* ── TOC sidebar ── hidden on small screens */}
