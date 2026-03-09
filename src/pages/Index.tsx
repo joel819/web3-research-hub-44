@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import toolTokenscope from "@/assets/tool-tokenscope.jpg";
 import toolChainmap from "@/assets/tool-chainmap.jpg";
 import toolGovwatch from "@/assets/tool-govwatch.jpg";
 import toolMevscanner from "@/assets/tool-mevscanner.jpg";
 import { Edit3, Eye, Plus, Trash2 } from "lucide-react";
+import type { ResearchType } from "@/components/ResearchCard";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
@@ -41,11 +42,11 @@ const defaultData = {
     { id: "mevscanner", name: "MEV Scanner", description: "Automated scanner that detects and categorizes MEV extraction patterns across Ethereum and L2 networks.", longDescription: "MEV Scanner continuously monitors the mempool and block production to detect and categorize MEV extraction events. It identifies sandwich attacks, arbitrage opportunities, liquidations, and JIT liquidity provision across Ethereum mainnet and major L2s.\n\nThe scanner provides real-time alerts, historical data exports, and integration APIs for building MEV-aware applications.", tags: ["Rust", "WebSocket", "Redis"], link: "#", featured: false, screenshots: [toolMevscanner] },
   ],
   research: [
-    { title: "Deep Dive: Restaking Protocol Risk Analysis", date: "2026-03-01", excerpt: "A comprehensive risk framework for evaluating restaking protocols, examining slashing conditions, operator incentives, and systemic risk vectors.", links: [{ platform: "Blog", url: "#" }, { platform: "Twitter", url: "#" }, { platform: "LinkedIn", url: "#" }] },
-    { title: "The State of L2 Sequencer Decentralization", date: "2026-02-18", excerpt: "Analysis of sequencer architectures across major L2s — how close are we to credible decentralization?", links: [{ platform: "Reddit", url: "#" }, { platform: "Twitter", url: "#" }] },
-    { title: "MEV on Solana: A Comparative Study", date: "2026-02-05", excerpt: "How MEV extraction on Solana differs from Ethereum, and what it means for the average user.", links: [{ platform: "Twitter", url: "#" }] },
-    { title: "Analyzing Bridge Security Post-2025 Exploits", date: "2026-01-22", excerpt: "Lessons learned from the latest bridge exploits and the evolution of cross-chain security models.", links: [{ platform: "LinkedIn", url: "#" }, { platform: "Blog", url: "#" }] },
-    { title: "DePIN Tokenomics: What Actually Works", date: "2026-01-10", excerpt: "Separating signal from noise in DePIN token design — which incentive models are sustainable?", links: [{ platform: "Blog", url: "#" }, { platform: "Reddit", url: "#" }, { platform: "Twitter", url: "#" }] },
+    { title: "Deep Dive: Restaking Protocol Risk Analysis", date: "2026-03-01", excerpt: "A comprehensive risk framework for evaluating restaking protocols, examining slashing conditions, operator incentives, and systemic risk vectors.", links: [{ platform: "Blog", url: "#" }, { platform: "Twitter", url: "#" }, { platform: "LinkedIn", url: "#" }], type: "report" as ResearchType, readTime: "18 min read" },
+    { title: "The State of L2 Sequencer Decentralization", date: "2026-02-18", excerpt: "Analysis of sequencer architectures across major L2s — how close are we to credible decentralization?", links: [{ platform: "Mirror", url: "#" }, { platform: "Twitter", url: "#" }], type: "article" as ResearchType, readTime: "12 min read" },
+    { title: "MEV on Solana: A Comparative Study", date: "2026-02-05", excerpt: "How MEV extraction on Solana differs from Ethereum, and what it means for the average user.", links: [{ platform: "Twitter", url: "#" }], type: "thread" as ResearchType, readTime: "6 min read" },
+    { title: "Analyzing Bridge Security Post-2025 Exploits", date: "2026-01-22", excerpt: "Lessons learned from the latest bridge exploits and the evolution of cross-chain security models.", links: [{ platform: "LinkedIn", url: "#" }, { platform: "Blog", url: "#" }], type: "report" as ResearchType, readTime: "15 min read" },
+    { title: "DePIN Tokenomics: What Actually Works", date: "2026-01-10", excerpt: "Separating signal from noise in DePIN token design — which incentive models are sustainable?", links: [{ platform: "Blog", url: "#" }, { platform: "Reddit", url: "#" }, { platform: "Twitter", url: "#" }], type: "article" as ResearchType, readTime: "10 min read" },
   ],
   ecosystems: EcosystemsSection.defaultEcosystems,
   collabs: OpenToSection.defaultCollabs,
@@ -61,16 +62,13 @@ const loadData = () => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (!saved) return defaultData;
     const parsed = JSON.parse(saved);
-    // Migrate old research format (single link/platform → links array)
+    // Migrate old research format
     if (parsed.research) {
       parsed.research = parsed.research.map((r: any) => {
-        if (r.links) return r;
-        return {
-          title: r.title,
-          date: r.date,
-          excerpt: r.excerpt || "",
-          links: [{ platform: r.platform || "Blog", url: r.link || "#" }],
-        };
+        const withLinks = r.links
+          ? r
+          : { title: r.title, date: r.date, excerpt: r.excerpt || "", links: [{ platform: r.platform || "Blog", url: r.link || "#" }] };
+        return { type: "article", readTime: "", ...withLinks };
       });
     }
     // Migrate old tool format (screenshot → screenshots)
@@ -88,9 +86,12 @@ const loadData = () => {
   }
 };
 
+type FilterType = "all" | ResearchType;
+
 const Index = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [data, setData] = useState(loadData);
+  const [researchFilter, setResearchFilter] = useState<FilterType>("all");
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -206,7 +207,7 @@ const Index = () => {
   };
 
   const addResearch = () => setData((d: typeof defaultData) => ({
-    ...d, research: [...d.research, { title: "New Post", date: "2026-01-01", excerpt: "Short excerpt", links: [{ platform: "Blog", url: "#" }] }]
+    ...d, research: [...d.research, { title: "New Post", date: "2026-01-01", excerpt: "Short excerpt", links: [{ platform: "Blog", url: "#" }], type: "article" as ResearchType, readTime: "5 min read" }]
   }));
   const removeResearch = (i: number) => setData((d: typeof defaultData) => ({
     ...d, research: d.research.filter((_: unknown, idx: number) => idx !== i)
@@ -293,40 +294,67 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Research */}
+      {/* Research / Writing */}
       <section id="research" className="section-padding bg-gradient-to-b from-transparent via-primary/[0.02] to-transparent">
         <div className="max-w-4xl mx-auto px-6">
           <ScrollReveal>
-            <div className="text-center mb-16">
+            <div className="text-center mb-10">
               <p className="text-sm text-primary font-mono uppercase tracking-widest mb-3">Publications</p>
-              <h2 className="text-3xl md:text-4xl font-bold font-display text-foreground">Recent Research</h2>
+              <h2 className="text-3xl md:text-4xl font-bold font-display text-foreground">Research & Writing</h2>
+              <p className="text-muted-foreground text-sm mt-3 max-w-xl mx-auto">Long-form articles, research reports, and curated threads.</p>
             </div>
           </ScrollReveal>
+
+          {/* Filter tabs */}
+          {!isEditing && (
+            <ScrollReveal>
+              <div className="flex justify-center gap-2 mb-10">
+                {(["all", "article", "thread", "report"] as FilterType[]).map((f) => (
+                  <button
+                    key={f}
+                    onClick={() => setResearchFilter(f)}
+                    className={`text-xs font-mono px-4 py-1.5 rounded-full border transition-all ${
+                      researchFilter === f
+                        ? "bg-primary/10 border-primary/40 text-primary"
+                        : "border-border/30 text-muted-foreground hover:border-border/60 hover:text-foreground"
+                    }`}
+                  >
+                    {f === "all" ? "All" : f.charAt(0).toUpperCase() + f.slice(1) + "s"}
+                  </button>
+                ))}
+              </div>
+            </ScrollReveal>
+          )}
+
           <div className="space-y-4">
-            {data.research.map((r, i) => (
-              <ScrollReveal key={i} delay={i * 80}>
-                <div className="relative">
-                  <ResearchCard
-                    research={r}
-                    onChange={(f, v) => updateResearch(i, f, v)}
-                    onUpdateLink={(linkIdx, field, v) => updateResearchLink(i, linkIdx, field, v)}
-                    onAddLink={() => addResearchLink(i)}
-                    onRemoveLink={(linkIdx) => removeResearchLink(i, linkIdx)}
-                    isEditing={isEditing}
-                  />
-                  {isEditing && (
-                    <button onClick={() => removeResearch(i)} className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1.5 hover:scale-110 transition-transform shadow-lg z-10">
-                      <Trash2 size={12} />
-                    </button>
-                  )}
-                </div>
-              </ScrollReveal>
-            ))}
+            {data.research
+              .map((r: any, i: number) => ({ r, i }))
+              .filter(({ r }: { r: any }) => isEditing || researchFilter === "all" || (r.type ?? "article") === researchFilter)
+              .map(({ r, i }: { r: any; i: number }) => (
+                <ScrollReveal key={i} delay={(i % 5) * 80}>
+                  <div className="relative">
+                    <ResearchCard
+                      research={r}
+                      index={i}
+                      onChange={(f, v) => updateResearch(i, f, v)}
+                      onUpdateLink={(linkIdx, field, v) => updateResearchLink(i, linkIdx, field, v)}
+                      onAddLink={() => addResearchLink(i)}
+                      onRemoveLink={(linkIdx) => removeResearchLink(i, linkIdx)}
+                      isEditing={isEditing}
+                    />
+                    {isEditing && (
+                      <button onClick={() => removeResearch(i)} className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1.5 hover:scale-110 transition-transform shadow-lg z-10">
+                        <Trash2 size={12} />
+                      </button>
+                    )}
+                  </div>
+                </ScrollReveal>
+              ))}
           </div>
           {isEditing && (
             <div className="text-center mt-6">
               <Button onClick={addResearch} variant="outline" className="border-dashed border-border/50 text-muted-foreground hover:text-primary hover:border-primary/30 gap-2">
-                <Plus size={14} /> Add Research
+                <Plus size={14} /> Add Entry
               </Button>
             </div>
           )}
