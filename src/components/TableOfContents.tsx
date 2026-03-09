@@ -1,17 +1,10 @@
 import { useEffect, useRef, useState } from "react";
+import { slugify } from "@/lib/slugify";
 
 interface Heading {
   id: string;
   text: string;
   level: number;
-}
-
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, "")
-    .trim()
-    .replace(/\s+/g, "-");
 }
 
 export function parseHeadings(markdown: string): Heading[] {
