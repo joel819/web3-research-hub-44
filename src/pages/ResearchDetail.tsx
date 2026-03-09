@@ -150,6 +150,7 @@ const ResearchDetail = () => {
         <ScrollReveal>
           <article className="prose-research">
             <ReactMarkdown
+              rehypePlugins={[rehypeHighlight]}
               components={{
                 h1: ({ children }) => (
                   <h1 className="text-2xl md:text-3xl font-bold font-display text-foreground mt-10 mb-4 leading-tight">{children}</h1>
@@ -181,21 +182,21 @@ const ResearchDetail = () => {
                 em: ({ children }) => (
                   <em className="italic text-muted-foreground/80">{children}</em>
                 ),
+                pre: ({ children }) => (
+                  <pre className="rounded-xl border border-border/30 overflow-x-auto mb-6 text-sm font-mono bg-[#0d1117] p-4">
+                    {children}
+                  </pre>
+                ),
                 code: ({ children, className }) => {
-                  const isBlock = className?.includes("language-");
+                  const isBlock = !!className;
                   return isBlock ? (
-                    <code className="block bg-muted/40 border border-border/30 rounded-lg p-4 text-sm font-mono text-foreground/90 overflow-x-auto mb-4 whitespace-pre">
-                      {children}
-                    </code>
+                    <code className={className}>{children}</code>
                   ) : (
                     <code className="bg-muted/50 border border-border/20 rounded px-1.5 py-0.5 text-xs font-mono text-primary/90">
                       {children}
                     </code>
                   );
                 },
-                pre: ({ children }) => (
-                  <pre className="bg-muted/40 border border-border/30 rounded-lg p-4 overflow-x-auto mb-4 text-sm font-mono">{children}</pre>
-                ),
                 blockquote: ({ children }) => (
                   <blockquote className="border-l-2 border-primary/40 pl-4 py-1 my-4 text-muted-foreground/80 italic">{children}</blockquote>
                 ),
