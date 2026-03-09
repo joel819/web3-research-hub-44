@@ -8,6 +8,8 @@ import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github-dark.css";
 import type { ResearchType } from "@/components/ResearchCard";
+import TableOfContents, { parseHeadings } from "@/components/TableOfContents";
+import { slugify } from "@/lib/slugify";
 
 const STORAGE_KEY = "web3-portfolio-v2";
 
@@ -61,7 +63,6 @@ const ResearchDetail = () => {
     data = saved ? JSON.parse(saved) : null;
   } catch { /* empty */ }
 
-  // Provide defaults matching Index.tsx defaultData
   if (!data) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -89,160 +90,177 @@ const ResearchDetail = () => {
   const cfg = typeConfig[type];
   const TypeIcon = cfg.icon;
   const body: string = research.body || DEFAULT_BODY;
+  const headings = parseHeadings(body);
 
   return (
     <div className="min-h-screen bg-background">
       <Navbar name={data.name} />
 
-      <div className="max-w-3xl mx-auto px-6 pt-28 pb-24">
-        {/* Back link */}
-        <ScrollReveal>
-          <Link
-            to="/#research"
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-10"
-          >
-            <ArrowLeft size={16} /> Back to research
-          </Link>
-        </ScrollReveal>
+      {/* Wide layout: article + TOC sidebar */}
+      <div className="max-w-6xl mx-auto px-6 pt-28 pb-24">
+        <div className="flex gap-16 items-start">
 
-        {/* Header */}
-        <ScrollReveal>
-          <div className="mb-8">
-            <div className="flex items-center gap-2 mb-4">
-              <Badge variant="outline" className={`text-[10px] font-mono gap-1 ${cfg.style}`}>
-                <TypeIcon size={9} />
-                {cfg.label}
-              </Badge>
-            </div>
+          {/* ── Main column ── */}
+          <div className="flex-1 min-w-0 max-w-3xl">
+            {/* Back link */}
+            <ScrollReveal>
+              <Link
+                to="/#research"
+                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-10"
+              >
+                <ArrowLeft size={16} /> Back to research
+              </Link>
+            </ScrollReveal>
 
-            <h1 className="text-3xl md:text-4xl font-bold font-display text-foreground leading-tight mb-4">
-              {research.title}
-            </h1>
+            {/* Header */}
+            <ScrollReveal>
+              <div className="mb-8">
+                <div className="flex items-center gap-2 mb-4">
+                  <Badge variant="outline" className={`text-[10px] font-mono gap-1 ${cfg.style}`}>
+                    <TypeIcon size={9} />
+                    {cfg.label}
+                  </Badge>
+                </div>
 
-            <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <span className="font-mono">{research.date}</span>
-              {research.readTime && (
-                <>
-                  <span className="text-muted-foreground/30">·</span>
-                  <span className="flex items-center gap-1.5">
-                    <Clock size={13} />
-                    {research.readTime}
-                  </span>
-                </>
-              )}
-            </div>
+                <h1 className="text-3xl md:text-4xl font-bold font-display text-foreground leading-tight mb-4">
+                  {research.title}
+                </h1>
 
-            {/* Excerpt / lead */}
-            {research.excerpt && (
-              <p className="mt-4 text-lg text-muted-foreground leading-relaxed border-l-2 border-primary/40 pl-4">
-                {research.excerpt}
-              </p>
+                <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                  <span className="font-mono">{research.date}</span>
+                  {research.readTime && (
+                    <>
+                      <span className="text-muted-foreground/30">·</span>
+                      <span className="flex items-center gap-1.5">
+                        <Clock size={13} />
+                        {research.readTime}
+                      </span>
+                    </>
+                  )}
+                </div>
+
+                {research.excerpt && (
+                  <p className="mt-4 text-lg text-muted-foreground leading-relaxed border-l-2 border-primary/40 pl-4">
+                    {research.excerpt}
+                  </p>
+                )}
+              </div>
+            </ScrollReveal>
+
+            {/* Divider */}
+            <ScrollReveal>
+              <div className="h-px bg-gradient-to-r from-transparent via-border/60 to-transparent mb-10" />
+            </ScrollReveal>
+
+            {/* Markdown body */}
+            <ScrollReveal>
+              <article className="prose-research">
+                <ReactMarkdown
+                  rehypePlugins={[rehypeHighlight]}
+                  components={{
+                    h1: ({ children }) => {
+                      const id = slugify(String(children));
+                      return <h1 id={id} className="text-2xl md:text-3xl font-bold font-display text-foreground mt-10 mb-4 leading-tight scroll-mt-28">{children}</h1>;
+                    },
+                    h2: ({ children }) => {
+                      const id = slugify(String(children));
+                      return <h2 id={id} className="text-xl md:text-2xl font-bold font-display text-foreground mt-8 mb-3 leading-tight scroll-mt-28">{children}</h2>;
+                    },
+                    h3: ({ children }) => {
+                      const id = slugify(String(children));
+                      return <h3 id={id} className="text-lg font-semibold font-display text-foreground mt-6 mb-2 scroll-mt-28">{children}</h3>;
+                    },
+                    p: ({ children }) => (
+                      <p className="text-muted-foreground leading-relaxed mb-4 text-[0.95rem]">{children}</p>
+                    ),
+                    ul: ({ children }) => (
+                      <ul className="space-y-2 mb-4 pl-4">{children}</ul>
+                    ),
+                    ol: ({ children }) => (
+                      <ol className="space-y-2 mb-4 pl-4 list-decimal list-inside">{children}</ol>
+                    ),
+                    li: ({ children }) => (
+                      <li className="text-muted-foreground text-[0.95rem] leading-relaxed flex gap-2 items-start">
+                        <span className="text-primary mt-1.5 shrink-0 text-xs">▸</span>
+                        <span>{children}</span>
+                      </li>
+                    ),
+                    strong: ({ children }) => (
+                      <strong className="font-semibold text-foreground">{children}</strong>
+                    ),
+                    em: ({ children }) => (
+                      <em className="italic text-muted-foreground/80">{children}</em>
+                    ),
+                    pre: ({ children }) => (
+                      <pre className="rounded-xl border border-border/30 overflow-x-auto mb-6 text-sm font-mono bg-[#0d1117] p-4">
+                        {children}
+                      </pre>
+                    ),
+                    code: ({ children, className }) => {
+                      const isBlock = !!className;
+                      return isBlock ? (
+                        <code className={className}>{children}</code>
+                      ) : (
+                        <code className="bg-muted/50 border border-border/20 rounded px-1.5 py-0.5 text-xs font-mono text-primary/90">
+                          {children}
+                        </code>
+                      );
+                    },
+                    blockquote: ({ children }) => (
+                      <blockquote className="border-l-2 border-primary/40 pl-4 py-1 my-4 text-muted-foreground/80 italic">{children}</blockquote>
+                    ),
+                    hr: () => (
+                      <div className="h-px bg-gradient-to-r from-transparent via-border/50 to-transparent my-8" />
+                    ),
+                    a: ({ href, children }) => (
+                      <a
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary hover:text-primary/80 underline underline-offset-2 decoration-primary/30 transition-colors"
+                      >
+                        {children}
+                      </a>
+                    ),
+                  }}
+                >
+                  {body}
+                </ReactMarkdown>
+              </article>
+            </ScrollReveal>
+
+            {/* Platform links */}
+            {research.links?.length > 0 && (
+              <ScrollReveal>
+                <div className="mt-10 pt-8 border-t border-border/20">
+                  <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-4">Read on</p>
+                  <div className="flex flex-wrap gap-2">
+                    {research.links.map((pl: { platform: string; url: string }, i: number) => (
+                      pl.url && pl.url !== "#" ? (
+                        <a key={i} href={pl.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 transition-opacity hover:opacity-80">
+                          <Badge variant="outline" className={`text-[11px] font-medium gap-1 cursor-pointer ${getPlatformStyle(pl.platform)}`}>
+                            {pl.platform} <ExternalLink size={10} />
+                          </Badge>
+                        </a>
+                      ) : (
+                        <Badge key={i} variant="outline" className={`text-[11px] font-medium gap-1 ${getPlatformStyle(pl.platform)}`}>
+                          {pl.platform}
+                        </Badge>
+                      )
+                    ))}
+                  </div>
+                </div>
+              </ScrollReveal>
             )}
           </div>
-        </ScrollReveal>
 
-        {/* Divider */}
-        <ScrollReveal>
-          <div className="h-px bg-gradient-to-r from-transparent via-border/60 to-transparent mb-10" />
-        </ScrollReveal>
-
-        {/* Markdown body */}
-        <ScrollReveal>
-          <article className="prose-research">
-            <ReactMarkdown
-              rehypePlugins={[rehypeHighlight]}
-              components={{
-                h1: ({ children }) => (
-                  <h1 className="text-2xl md:text-3xl font-bold font-display text-foreground mt-10 mb-4 leading-tight">{children}</h1>
-                ),
-                h2: ({ children }) => (
-                  <h2 className="text-xl md:text-2xl font-bold font-display text-foreground mt-8 mb-3 leading-tight">{children}</h2>
-                ),
-                h3: ({ children }) => (
-                  <h3 className="text-lg font-semibold font-display text-foreground mt-6 mb-2">{children}</h3>
-                ),
-                p: ({ children }) => (
-                  <p className="text-muted-foreground leading-relaxed mb-4 text-[0.95rem]">{children}</p>
-                ),
-                ul: ({ children }) => (
-                  <ul className="space-y-2 mb-4 pl-4">{children}</ul>
-                ),
-                ol: ({ children }) => (
-                  <ol className="space-y-2 mb-4 pl-4 list-decimal list-inside">{children}</ol>
-                ),
-                li: ({ children }) => (
-                  <li className="text-muted-foreground text-[0.95rem] leading-relaxed flex gap-2 items-start">
-                    <span className="text-primary mt-1.5 shrink-0 text-xs">▸</span>
-                    <span>{children}</span>
-                  </li>
-                ),
-                strong: ({ children }) => (
-                  <strong className="font-semibold text-foreground">{children}</strong>
-                ),
-                em: ({ children }) => (
-                  <em className="italic text-muted-foreground/80">{children}</em>
-                ),
-                pre: ({ children }) => (
-                  <pre className="rounded-xl border border-border/30 overflow-x-auto mb-6 text-sm font-mono bg-[#0d1117] p-4">
-                    {children}
-                  </pre>
-                ),
-                code: ({ children, className }) => {
-                  const isBlock = !!className;
-                  return isBlock ? (
-                    <code className={className}>{children}</code>
-                  ) : (
-                    <code className="bg-muted/50 border border-border/20 rounded px-1.5 py-0.5 text-xs font-mono text-primary/90">
-                      {children}
-                    </code>
-                  );
-                },
-                blockquote: ({ children }) => (
-                  <blockquote className="border-l-2 border-primary/40 pl-4 py-1 my-4 text-muted-foreground/80 italic">{children}</blockquote>
-                ),
-                hr: () => (
-                  <div className="h-px bg-gradient-to-r from-transparent via-border/50 to-transparent my-8" />
-                ),
-                a: ({ href, children }) => (
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary hover:text-primary/80 underline underline-offset-2 decoration-primary/30 transition-colors"
-                  >
-                    {children}
-                  </a>
-                ),
-              }}
-            >
-              {body}
-            </ReactMarkdown>
-          </article>
-        </ScrollReveal>
-
-        {/* Platform links */}
-        {research.links?.length > 0 && (
-          <ScrollReveal>
-            <div className="mt-10 pt-8 border-t border-border/20">
-              <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-4">Read on</p>
-              <div className="flex flex-wrap gap-2">
-                {research.links.map((pl: { platform: string; url: string }, i: number) => (
-                  pl.url && pl.url !== "#" ? (
-                    <a key={i} href={pl.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 transition-opacity hover:opacity-80">
-                      <Badge variant="outline" className={`text-[11px] font-medium gap-1 cursor-pointer ${getPlatformStyle(pl.platform)}`}>
-                        {pl.platform} <ExternalLink size={10} />
-                      </Badge>
-                    </a>
-                  ) : (
-                    <Badge key={i} variant="outline" className={`text-[11px] font-medium gap-1 ${getPlatformStyle(pl.platform)}`}>
-                      {pl.platform}
-                    </Badge>
-                  )
-                ))}
-              </div>
-            </div>
-          </ScrollReveal>
-        )}
+          {/* ── TOC sidebar ── hidden on small screens */}
+          {headings.length > 0 && (
+            <aside className="hidden xl:block w-56 shrink-0">
+              <TableOfContents headings={headings} />
+            </aside>
+          )}
+        </div>
       </div>
 
       <Footer
