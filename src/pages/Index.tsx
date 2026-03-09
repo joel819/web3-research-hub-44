@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import toolTokenscope from "@/assets/tool-tokenscope.jpg";
 import toolChainmap from "@/assets/tool-chainmap.jpg";
 import toolGovwatch from "@/assets/tool-govwatch.jpg";
 import toolMevscanner from "@/assets/tool-mevscanner.jpg";
 import { Edit3, Eye, Plus, Trash2 } from "lucide-react";
+import type { ResearchType } from "@/components/ResearchCard";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
