@@ -133,12 +133,12 @@ const ResearchDetail = () => {
 
                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
                   <span className="font-mono">{research.date}</span>
-                  {research.readTime && (
+                  {readTime && (
                     <>
                       <span className="text-muted-foreground/30">·</span>
                       <span className="flex items-center gap-1.5">
                         <Clock size={13} />
-                        {research.readTime}
+                        {readTime}
                       </span>
                     </>
                   )}
