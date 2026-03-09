@@ -294,40 +294,67 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Research */}
+      {/* Research / Writing */}
       <section id="research" className="section-padding bg-gradient-to-b from-transparent via-primary/[0.02] to-transparent">
         <div className="max-w-4xl mx-auto px-6">
           <ScrollReveal>
-            <div className="text-center mb-16">
+            <div className="text-center mb-10">
               <p className="text-sm text-primary font-mono uppercase tracking-widest mb-3">Publications</p>
-              <h2 className="text-3xl md:text-4xl font-bold font-display text-foreground">Recent Research</h2>
+              <h2 className="text-3xl md:text-4xl font-bold font-display text-foreground">Research & Writing</h2>
+              <p className="text-muted-foreground text-sm mt-3 max-w-xl mx-auto">Long-form articles, research reports, and curated threads.</p>
             </div>
           </ScrollReveal>
+
+          {/* Filter tabs */}
+          {!isEditing && (
+            <ScrollReveal>
+              <div className="flex justify-center gap-2 mb-10">
+                {(["all", "article", "thread", "report"] as FilterType[]).map((f) => (
+                  <button
+                    key={f}
+                    onClick={() => setResearchFilter(f)}
+                    className={`text-xs font-mono px-4 py-1.5 rounded-full border transition-all ${
+                      researchFilter === f
+                        ? "bg-primary/10 border-primary/40 text-primary"
+                        : "border-border/30 text-muted-foreground hover:border-border/60 hover:text-foreground"
+                    }`}
+                  >
+                    {f === "all" ? "All" : f.charAt(0).toUpperCase() + f.slice(1) + "s"}
+                  </button>
+                ))}
+              </div>
+            </ScrollReveal>
+          )}
+
           <div className="space-y-4">
-            {data.research.map((r, i) => (
-              <ScrollReveal key={i} delay={i * 80}>
-                <div className="relative">
-                  <ResearchCard
-                    research={r}
-                    onChange={(f, v) => updateResearch(i, f, v)}
-                    onUpdateLink={(linkIdx, field, v) => updateResearchLink(i, linkIdx, field, v)}
-                    onAddLink={() => addResearchLink(i)}
-                    onRemoveLink={(linkIdx) => removeResearchLink(i, linkIdx)}
-                    isEditing={isEditing}
-                  />
-                  {isEditing && (
-                    <button onClick={() => removeResearch(i)} className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1.5 hover:scale-110 transition-transform shadow-lg z-10">
-                      <Trash2 size={12} />
-                    </button>
-                  )}
-                </div>
-              </ScrollReveal>
-            ))}
+            {data.research
+              .map((r: any, i: number) => ({ r, i }))
+              .filter(({ r }: { r: any }) => isEditing || researchFilter === "all" || (r.type ?? "article") === researchFilter)
+              .map(({ r, i }: { r: any; i: number }) => (
+                <ScrollReveal key={i} delay={(i % 5) * 80}>
+                  <div className="relative">
+                    <ResearchCard
+                      research={r}
+                      index={i}
+                      onChange={(f, v) => updateResearch(i, f, v)}
+                      onUpdateLink={(linkIdx, field, v) => updateResearchLink(i, linkIdx, field, v)}
+                      onAddLink={() => addResearchLink(i)}
+                      onRemoveLink={(linkIdx) => removeResearchLink(i, linkIdx)}
+                      isEditing={isEditing}
+                    />
+                    {isEditing && (
+                      <button onClick={() => removeResearch(i)} className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1.5 hover:scale-110 transition-transform shadow-lg z-10">
+                        <Trash2 size={12} />
+                      </button>
+                    )}
+                  </div>
+                </ScrollReveal>
+              ))}
           </div>
           {isEditing && (
             <div className="text-center mt-6">
               <Button onClick={addResearch} variant="outline" className="border-dashed border-border/50 text-muted-foreground hover:text-primary hover:border-primary/30 gap-2">
-                <Plus size={14} /> Add Research
+                <Plus size={14} /> Add Entry
               </Button>
             </div>
           )}
