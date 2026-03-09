@@ -12,6 +12,7 @@ import TableOfContents, { parseHeadings } from "@/components/TableOfContents";
 import { slugify } from "@/lib/slugify";
 import CopyCodeBlock from "@/components/CopyCodeBlock";
 import ReadingProgressBar from "@/components/ReadingProgressBar";
+import BackToTopButton from "@/components/BackToTopButton";
 import { calculateReadingTime } from "@/lib/readingTime";
 
 const STORAGE_KEY = "web3-portfolio-v2";
