@@ -10,6 +10,7 @@ import "highlight.js/styles/github-dark.css";
 import type { ResearchType } from "@/components/ResearchCard";
 import TableOfContents, { parseHeadings } from "@/components/TableOfContents";
 import { slugify } from "@/lib/slugify";
+import CopyCodeBlock from "@/components/CopyCodeBlock";
 
 const STORAGE_KEY = "web3-portfolio-v2";
 
@@ -192,9 +193,7 @@ const ResearchDetail = () => {
                       <em className="italic text-muted-foreground/80">{children}</em>
                     ),
                     pre: ({ children }) => (
-                      <pre className="rounded-xl border border-border/30 overflow-x-auto mb-6 text-sm font-mono bg-[#0d1117] p-4">
-                        {children}
-                      </pre>
+                      <CopyCodeBlock>{children}</CopyCodeBlock>
                     ),
                     code: ({ children, className }) => {
                       const isBlock = !!className;
