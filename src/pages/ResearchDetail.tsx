@@ -310,7 +310,14 @@ const ResearchDetail = () => {
                             <h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2 mb-1">
                               {r.title}
                             </h3>
-                            <span className="text-xs text-muted-foreground font-mono">{r.date}</span>
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground font-mono">
+                              <span>{r.date}</span>
+                              <span className="text-muted-foreground/30">·</span>
+                              <span className="flex items-center gap-1">
+                                <Clock size={10} />
+                                {r.readTime || calculateReadingTime(r.body || DEFAULT_BODY)}
+                              </span>
+                            </div>
                           </Link>
                         );
                       })}
