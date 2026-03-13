@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ExternalLink, Plus, Trash2, FileText, MessageSquare, BarChart3, Clock, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -56,13 +56,23 @@ const typeConfig: Record<ResearchType, { label: string; icon: LucideIcon; style:
 const TYPES: ResearchType[] = ["article", "thread", "report"];
 
 const ResearchCard = ({ research, index, onChange, onUpdateLink, onAddLink, onRemoveLink, isEditing }: ResearchCardProps) => {
+  const navigate = useNavigate();
   const type = research.type ?? "article";
   const cfg = typeConfig[type];
   const TypeIcon = cfg.icon;
   const readTime = research.readTime || (research.body ? calculateReadingTime(research.body) : "");
 
+  const handleCardClick = () => {
+    if (!isEditing) {
+      navigate(`/research/${index}`);
+    }
+  };
+
   const cardContent = (
-    <div className="glass-card-hover p-6 group relative overflow-hidden">
+    <div 
+      className={`glass-card-hover p-6 group relative overflow-hidden ${!isEditing ? "cursor-pointer" : ""}`}
+      onClick={handleCardClick}
+    >
       {/* Background index number */}
       <span className="absolute right-4 top-3 text-6xl font-black text-foreground/[0.03] select-none font-display leading-none pointer-events-none">
         {String(index + 1).padStart(2, "0")}
@@ -76,7 +86,10 @@ const ResearchCard = ({ research, index, onChange, onUpdateLink, onAddLink, onRe
             {TYPES.map((t) => (
               <button
                 key={t}
-                onClick={() => onChange("type", t)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onChange("type", t);
+                }}
                 className={`text-[10px] font-mono px-2 py-0.5 rounded border transition-colors ${
                   type === t ? typeConfig[t].style + " opacity-100" : "border-border/30 text-muted-foreground bg-transparent opacity-50 hover:opacity-80"
                 }`}
@@ -166,7 +179,7 @@ const ResearchCard = ({ research, index, onChange, onUpdateLink, onAddLink, onRe
 
       {/* Platform links — edit mode */}
       {isEditing && (
-        <div className="mt-4 space-y-2 border-t border-border/20 pt-4">
+        <div className="mt-4 space-y-2 border-t border-border/20 pt-4" onClick={(e) => e.stopPropagation()}>
           <p className="text-xs text-muted-foreground font-mono uppercase tracking-wider mb-2">Platform Links</p>
           {research.links.map((pl, i) => (
             <div key={i} className="flex gap-2 items-center">
@@ -176,12 +189,26 @@ const ResearchCard = ({ research, index, onChange, onUpdateLink, onAddLink, onRe
               <div className="flex-1">
                 <EditableField value={pl.url} onChange={(v) => onUpdateLink(i, "url", v)} isEditing placeholder="https://..." />
               </div>
-              <button onClick={() => onRemoveLink(i)} className="text-destructive/60 hover:text-destructive transition-colors p-1 shrink-0">
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onRemoveLink(i);
+                }} 
+                className="text-destructive/60 hover:text-destructive transition-colors p-1 shrink-0"
+              >
                 <Trash2 size={14} />
               </button>
             </div>
           ))}
-          <Button onClick={onAddLink} variant="outline" size="sm" className="border-dashed border-border/40 text-muted-foreground text-xs hover:text-primary hover:border-primary/30 gap-1.5">
+          <Button 
+            onClick={(e) => {
+              e.stopPropagation();
+              onAddLink();
+            }} 
+            variant="outline" 
+            size="sm" 
+            className="border-dashed border-border/40 text-muted-foreground text-xs hover:text-primary hover:border-primary/30 gap-1.5"
+          >
             <Plus size={12} /> Add Link
           </Button>
         </div>
@@ -189,7 +216,7 @@ const ResearchCard = ({ research, index, onChange, onUpdateLink, onAddLink, onRe
 
       {/* Body markdown editor — edit mode only */}
       {isEditing && (
-        <div className="mt-4 border-t border-border/20 pt-4">
+        <div className="mt-4 border-t border-border/20 pt-4" onClick={(e) => e.stopPropagation()}>
           <p className="text-xs text-muted-foreground font-mono uppercase tracking-wider mb-2">Article Body (Markdown)</p>
           <textarea
             value={research.body ?? ""}
@@ -203,14 +230,7 @@ const ResearchCard = ({ research, index, onChange, onUpdateLink, onAddLink, onRe
     </div>
   );
 
-  // In view mode wrap the whole card in a Link; in edit mode just render it plain
-  if (isEditing) return cardContent;
-
-  return (
-    <Link to={`/research/${index}`} className="block">
-      {cardContent}
-    </Link>
-  );
+  return cardContent;
 };
 
 export default ResearchCard;

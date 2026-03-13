@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { Star, Upload, X, Plus, ArrowRight } from "lucide-react";
+import { Star, Upload, X, Plus, ArrowRight, ExternalLink } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -162,12 +162,24 @@ const ToolCard = ({ tool, index, onChange, onToggleFeatured, onAddScreenshot, on
               </Badge>
             ))}
           </div>
-          <Link
-            to={`/tool/${index}`}
-            className="inline-flex items-center gap-2 text-sm text-primary hover:text-primary/80 font-medium transition-colors group/link"
-          >
-            View Details <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link
+              to={`/tool/${index}`}
+              className="inline-flex items-center gap-2 text-sm text-primary hover:text-primary/80 font-medium transition-colors group/link"
+            >
+              View Details <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
+            </Link>
+            {tool.link && tool.link !== "#" && (
+              <a
+                href={tool.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-sm bg-primary/10 text-primary hover:bg-primary/20 px-3 py-1.5 rounded-full font-medium transition-colors"
+              >
+                <ExternalLink size={12} /> Live Demo
+              </a>
+            )}
+          </div>
         </>
       )}
     </div>

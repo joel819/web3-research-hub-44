@@ -114,7 +114,7 @@ const HeroSection = ({ data, isEditing, onUpdate }: HeroProps) => {
           </div>
         )}
 
-        {/* Socials */}
+        {/* Socials & Credentials */}
         {isEditing ? (
           <div className="grid grid-cols-2 gap-3 max-w-md mx-auto">
             {(["twitter", "linkedin", "reddit", "github"] as const).map((s) => (
@@ -122,11 +122,21 @@ const HeroSection = ({ data, isEditing, onUpdate }: HeroProps) => {
             ))}
           </div>
         ) : (
-          <div className="flex items-center justify-center gap-3">
-            <SocialIcon href={data.twitter}><XIcon size={18} /></SocialIcon>
-            <SocialIcon href={data.linkedin}><Linkedin size={18} /></SocialIcon>
-            <SocialIcon href={data.reddit}><FaReddit /></SocialIcon>
-            <SocialIcon href={data.github}><Github size={18} /></SocialIcon>
+          <div className="flex flex-col items-center gap-6">
+            <div className="flex items-center justify-center gap-3">
+              <SocialIcon href={data.twitter}><XIcon size={18} /></SocialIcon>
+              <SocialIcon href={data.linkedin}><Linkedin size={18} /></SocialIcon>
+              <SocialIcon href={data.reddit}><FaReddit /></SocialIcon>
+              <SocialIcon href={data.github}><Github size={18} /></SocialIcon>
+            </div>
+            
+            {/* Credential Badge */}
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/5 border border-primary/20 backdrop-blur-sm group hover:border-primary/40 transition-colors">
+              <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <span className="text-xs font-mono text-primary/80 uppercase tracking-widest">
+                NVIDIA 6G Developer Program
+              </span>
+            </div>
           </div>
         )}
 

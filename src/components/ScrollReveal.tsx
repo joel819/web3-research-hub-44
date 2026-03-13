@@ -5,6 +5,7 @@ interface ScrollRevealProps {
   children: React.ReactNode;
   className?: string;
   delay?: number;
+  key?: React.Key;
 }
 
 const ScrollReveal = ({ children, className, delay = 0 }: ScrollRevealProps) => {
