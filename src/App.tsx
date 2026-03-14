@@ -10,6 +10,8 @@ import Index from "./pages/Index";
 import ToolDetail from "./pages/ToolDetail";
 import ResearchDetail from "./pages/ResearchDetail";
 import NotFound from "./pages/NotFound";
+import ToolsPage from "./pages/ToolsPage";
+import { PortfolioProvider } from "./contexts/PortfolioContext";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +22,7 @@ const AnimatedRoutes = () => {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageTransition><Index /></PageTransition>} />
         <Route path="/tool/:id" element={<PageTransition><ToolDetail /></PageTransition>} />
+        <Route path="/tools" element={<PageTransition><ToolsPage /></PageTransition>} />
         <Route path="/research/:index" element={<PageTransition><ResearchDetail /></PageTransition>} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
@@ -32,11 +35,13 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
       <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AnimatedRoutes />
-        </BrowserRouter>
+        <PortfolioProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <AnimatedRoutes />
+          </BrowserRouter>
+        </PortfolioProvider>
       </TooltipProvider>
     </ThemeProvider>
   </QueryClientProvider>
