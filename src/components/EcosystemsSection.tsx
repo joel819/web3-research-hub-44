@@ -11,9 +11,9 @@ const defaultEcosystems: Ecosystem[] = [
   { name: "Base", color: "hsl(220, 80%, 55%)" },
   { name: "Arbitrum", color: "hsl(210, 80%, 55%)" },
   { name: "Sui", color: "hsl(200, 85%, 55%)" },
-  { name: "Optimism", color: "hsl(0, 70%, 55%)" },
-  { name: "Polygon", color: "hsl(270, 60%, 55%)" },
-  { name: "Avalanche", color: "hsl(0, 65%, 50%)" },
+  { name: "Helium", color: "hsl(160, 70%, 50%)" },
+  { name: "IoTeX", color: "hsl(175, 75%, 45%)" },
+  { name: "Render Network", color: "hsl(30, 80%, 55%)" },
 ];
 
 interface EcosystemsSectionProps {

@@ -8,15 +8,15 @@ export const STORAGE_KEY = "web3-portfolio-v2";
 
 export const defaultData = {
   name: "0xResearcher",
-  bio: "Web3 researcher and tool builder documenting the future of decentralized infrastructure. Building at the intersection of Web3 and 6G as an NVIDIA 6G Developer Program member.",
+  bio: "Web3 researcher and tool builder documenting the future of decentralized infrastructure. Building at the intersection of Web3, DePIN and 6G as an NVIDIA 6G Developer Program member.",
   roles: ["Web3 Researcher", "Tool Builder", "Automation Engineer"],
   twitter: "https://twitter.com",
   linkedin: "https://linkedin.com",
   reddit: "https://reddit.com",
   github: "https://github.com",
   stats: [
-    { label: "Projects Researched", value: "8" },
-    { label: "Tools Built", value: "8" },
+    { label: "Projects Researched", value: "10" },
+    { label: "Tools Built", value: "9" },
     { label: "Weeks Building in Public", value: "1" },
     { label: "Posts Published", value: "6" },
   ],
