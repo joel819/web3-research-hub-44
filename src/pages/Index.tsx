@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 
-import { Edit3, Eye, Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import type { ResearchType } from "@/components/ResearchCard";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
@@ -163,7 +163,7 @@ const loadData = () => {
 type FilterType = "all" | ResearchType;
 
 const Index = () => {
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing] = useState(false);
   const [data, setData] = useState(loadData);
   const [researchFilter, setResearchFilter] = useState<FilterType>("all");
 
@@ -299,20 +299,6 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Navbar name={data.name} />
 
-      {/* Edit Toggle */}
-      <div className="fixed bottom-6 right-6 z-50">
-        <Button
-          onClick={() => setIsEditing(!isEditing)}
-          size="lg"
-          className={isEditing
-            ? "bg-primary hover:bg-primary/90 text-primary-foreground gap-2 shadow-lg shadow-primary/20"
-            : "bg-card/90 backdrop-blur-sm border border-border/50 hover:bg-card text-foreground gap-2 shadow-lg"
-          }
-        >
-          {isEditing ? <Eye size={18} /> : <Edit3 size={18} />}
-          {isEditing ? "Preview" : "Edit"}
-        </Button>
-      </div>
 
       {/* Hero */}
       <HeroSection
