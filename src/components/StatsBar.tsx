@@ -14,6 +14,7 @@ interface StatsBarProps {
 
 const StatItem = ({ stat, isEditing, onChange }: { stat: Stat; isEditing: boolean; onChange: (v: string) => void }) => {
   const numericValue = parseInt(stat.value) || 0;
+  const suffix = stat.value.includes("+") ? "+" : "";
   const { count, ref } = useCountUp(numericValue, 1800);
 
   return (
@@ -22,7 +23,7 @@ const StatItem = ({ stat, isEditing, onChange }: { stat: Stat; isEditing: boolea
         <EditableField value={stat.value} onChange={onChange} isEditing placeholder="0" />
       ) : (
         <div className="text-4xl md:text-5xl font-bold font-mono text-primary glow-text mb-2">
-          {count}
+          {count}{suffix}
         </div>
       )}
       <div className="text-xs text-muted-foreground uppercase tracking-[0.2em] font-medium">{stat.label}</div>

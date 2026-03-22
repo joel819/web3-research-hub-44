@@ -1,4 +1,4 @@
-import { Linkedin, Github, ArrowDown } from "lucide-react";
+import { Linkedin, Github, ArrowDown, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTypingEffect } from "@/hooks/useAnimations";
 import EditableField from "./EditableField";
@@ -24,11 +24,12 @@ interface HeroProps {
   onUpdate: (field: string, value: string) => void;
 }
 
-const SocialIcon = ({ href, children }: { href: string; children: React.ReactNode }) => (
+const SocialIcon = ({ href, children, label }: { href: string; children: React.ReactNode; label?: string }) => (
   <a
     href={href}
     target="_blank"
     rel="noopener noreferrer"
+    aria-label={label}
     className="w-10 h-10 rounded-full border border-border/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/40 hover:bg-primary/5 transition-all duration-300"
   >
     {children}
@@ -60,15 +61,38 @@ const HeroSection = ({ data, isEditing, onUpdate }: HeroProps) => {
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+        {/* Profile Image Placeholder */}
+        {!isEditing && (
+          <div className="flex justify-center mb-6">
+            <div className="w-28 h-28 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center shadow-lg shadow-emerald-500/20 ring-4 ring-emerald-500/20">
+              <span className="text-3xl font-bold text-white font-display tracking-wide">JO</span>
+            </div>
+          </div>
+        )}
+
         {/* Name */}
         {isEditing ? (
           <div className="mb-4 max-w-lg mx-auto">
             <EditableField value={data.name} onChange={(v) => onUpdate("name", v)} isEditing placeholder="Your name" />
           </div>
         ) : (
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold font-display gradient-text mb-4 leading-tight">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold font-display gradient-text mb-2 leading-tight">
             {data.name}
           </h1>
+        )}
+
+        {/* Handle */}
+        {!isEditing && (
+          <p className="text-base text-muted-foreground font-mono mb-4">
+            <a
+              href="https://x.com/joel_automate"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary transition-colors"
+            >
+              @joel_automate
+            </a>
+          </p>
         )}
 
         {/* Typing effect */}
@@ -124,17 +148,18 @@ const HeroSection = ({ data, isEditing, onUpdate }: HeroProps) => {
         ) : (
           <div className="flex flex-col items-center gap-6">
             <div className="flex items-center justify-center gap-3">
-              <SocialIcon href={data.twitter}><XIcon size={18} /></SocialIcon>
-              <SocialIcon href={data.linkedin}><Linkedin size={18} /></SocialIcon>
-              <SocialIcon href={data.reddit}><FaReddit /></SocialIcon>
-              <SocialIcon href={data.github}><Github size={18} /></SocialIcon>
+              <SocialIcon href={data.twitter} label="X (Twitter)"><XIcon size={18} /></SocialIcon>
+              <SocialIcon href={data.linkedin} label="LinkedIn"><Linkedin size={18} /></SocialIcon>
+              <SocialIcon href={data.github} label="GitHub"><Github size={18} /></SocialIcon>
+              <SocialIcon href={data.reddit} label="Reddit"><FaReddit /></SocialIcon>
+              <SocialIcon href="mailto:joeloyewole13@gmail.com" label="Email"><Mail size={18} /></SocialIcon>
             </div>
             
-            {/* Credential Badge */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/5 border border-primary/20 backdrop-blur-sm group hover:border-primary/40 transition-colors">
-              <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span className="text-xs font-mono text-primary/80 uppercase tracking-widest">
-                NVIDIA 6G Developer Program
+            {/* NVIDIA Credential Badge — Green and Prominent */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/30 backdrop-blur-sm group hover:border-emerald-500/50 transition-colors">
+              <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-xs font-mono text-emerald-400 uppercase tracking-widest font-semibold">
+                NVIDIA 6G Developer Program — Active Member 2026
               </span>
             </div>
           </div>

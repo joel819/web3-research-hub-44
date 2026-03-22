@@ -52,7 +52,7 @@ const Index = () => {
             </div>
           </ScrollReveal>
           <div className="grid md:grid-cols-2 gap-6">
-            {data.tools.slice(0, 6).map((tool, i) => (
+            {data.tools.slice(0, 8).map((tool, i) => (
               <ScrollReveal key={tool.id || i} delay={i * 100}>
                 <div className="relative">
                   <ToolCard

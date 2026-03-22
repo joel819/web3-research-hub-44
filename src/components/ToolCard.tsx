@@ -169,15 +169,20 @@ const ToolCard = ({ tool, index, onChange, onToggleFeatured, onAddScreenshot, on
             >
               View Details <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
             </Link>
-            {tool.link && tool.link !== "#" && (
+            {tool.link && tool.link !== "#" && tool.link.startsWith("http") && (
               <a
                 href={tool.link}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 text-sm bg-primary/10 text-primary hover:bg-primary/20 px-3 py-1.5 rounded-full font-medium transition-colors"
               >
-                <ExternalLink size={12} /> Live Demo
+                <ExternalLink size={12} /> {tool.link.includes("github") ? "GitHub" : "Live Demo"}
               </a>
+            )}
+            {tool.link === "" && (
+              <span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground/70 px-3 py-1.5 rounded-full font-medium bg-muted/30">
+                Delivered to client
+              </span>
             )}
           </div>
         </>

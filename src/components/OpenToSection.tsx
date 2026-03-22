@@ -1,4 +1,4 @@
-import { Briefcase, Wrench, Users, Handshake } from "lucide-react";
+import { Briefcase, Wrench, Users, Handshake, BookOpen } from "lucide-react";
 import EditableField from "./EditableField";
 import ScrollReveal from "./ScrollReveal";
 
@@ -9,10 +9,11 @@ interface CollabCard {
 }
 
 const defaultCollabs: CollabCard[] = [
-  { icon: "freelance", title: "Freelance Research", description: "Deep-dive analysis and due diligence on protocols, tokens, and DeFi strategies for your fund or DAO." },
-  { icon: "tools", title: "Tool Building", description: "Custom dashboards, analytics tools, and automation scripts tailored to your on-chain research needs." },
-  { icon: "content", title: "Content Collab", description: "Co-authored research reports, podcast appearances, and educational content for Web3 audiences." },
-  { icon: "protocol", title: "Protocol Partnerships", description: "Long-term research partnerships with emerging protocols seeking transparent, third-party analysis." },
+  { icon: "freelance", title: "DePIN Ecosystem Research", description: "Deep-dive analysis and scoring of DePIN projects on 6G readiness, network economics, and real-world deployment potential." },
+  { icon: "tools", title: "Web3 Tool Building", description: "Custom dashboards, automation bots, and analytics tools for Web3 teams and protocols." },
+  { icon: "protocol", title: "Protocol Research Collaborations", description: "Long-term research partnerships with emerging protocols seeking transparent, third-party analysis and reports." },
+  { icon: "content", title: "Freelance Automation Projects", description: "Building automation workflows, scrapers, and alert systems for individuals and businesses." },
+  { icon: "grant", title: "Grant Funded Research", description: "Open to funded research projects exploring DePIN infrastructure, 6G network readiness, and Web3 ecosystem analysis." },
 ];
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -20,6 +21,7 @@ const iconMap: Record<string, React.ReactNode> = {
   tools: <Wrench size={22} />,
   content: <Users size={22} />,
   protocol: <Handshake size={22} />,
+  grant: <BookOpen size={22} />,
 };
 
 interface OpenToSectionProps {
