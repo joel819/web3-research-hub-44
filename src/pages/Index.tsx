@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Plus, Trash2, ArrowRight } from "lucide-react";
 import { usePortfolio } from "@/contexts/PortfolioContext";
@@ -21,6 +21,10 @@ type FilterType = "all" | ResearchType;
 const Index = () => {
   const { data } = usePortfolio();
   const [researchFilter, setResearchFilter] = useState<FilterType>("all");
+
+  useEffect(() => {
+    document.title = "Joel Oyewole — Web3 Researcher & DePIN Tool Builder";
+  }, []);
 
   const noop = () => {};
 
