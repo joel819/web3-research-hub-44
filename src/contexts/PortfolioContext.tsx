@@ -4,7 +4,7 @@ import ProcessSection from "@/components/ProcessSection";
 import EcosystemsSection from "@/components/EcosystemsSection";
 import OpenToSection from "@/components/OpenToSection";
 
-export const STORAGE_KEY = "web3-portfolio-v3";
+export const STORAGE_KEY = "web3-portfolio-v4";
 
 export const defaultData = {
   name: "Joel Oyewole",
