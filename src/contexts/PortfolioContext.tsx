@@ -105,6 +105,102 @@ export const defaultData = {
   ],
   research: [
     { 
+      title: "DePIN Analysis: Civic Connect", 
+      date: "2026-03-31", 
+      excerpt: "Deep dive research into Civic Connect for 6G network readiness. Core score: 4.5/6.0", 
+      links: [{"platform": "X Article", "url": "https://x.com/joel_automate"}], 
+      type: "article" as ResearchType, 
+      readTime: "6 min read" 
+    },
+    { 
+      title: "DePIN Analysis: Althea", 
+      date: "2026-03-30", 
+      excerpt: "Deep dive research into Althea for 6G network readiness. Core score: 6.5/6.0", 
+      links: [{"platform": "X Article", "url": "https://x.com/joel_automate"}], 
+      type: "article" as ResearchType, 
+      readTime: "6 min read" 
+    },
+    { 
+      title: "DePIN Analysis: Mesh Networks Inc.", 
+      date: "2026-03-30", 
+      excerpt: "Deep dive research into Mesh Networks Inc. for 6G network readiness. Core score: 6.5/6.0", 
+      links: [{"platform": "X Article", "url": "https://x.com/joel_automate"}], 
+      type: "article" as ResearchType, 
+      readTime: "6 min read" 
+    },
+    { 
+      title: "DePIN Analysis: Hivemind", 
+      date: "2026-03-30", 
+      excerpt: "Deep dive research into Hivemind for 6G network readiness. Core score: 5.5/6.0", 
+      links: [{"platform": "X Article", "url": "https://x.com/joel_automate"}], 
+      type: "article" as ResearchType, 
+      readTime: "6 min read" 
+    },
+    { 
+      title: "DePIN Analysis: TerraCycle", 
+      date: "2026-03-30", 
+      excerpt: "Deep dive research into TerraCycle for 6G network readiness. Core score: 5.5/6.0", 
+      links: [{"platform": "X Article", "url": "https://x.com/joel_automate"}], 
+      type: "article" as ResearchType, 
+      readTime: "6 min read" 
+    },
+    { 
+      title: "DePIN Analysis: RightMesh", 
+      date: "2026-03-29", 
+      excerpt: "Deep dive research into RightMesh for 6G network readiness. Core score: 3.5/6.0", 
+      links: [{"platform": "X Article", "url": "https://x.com/joel_automate"}], 
+      type: "article" as ResearchType, 
+      readTime: "6 min read" 
+    },
+    { 
+      title: "DePIN Analysis: Freenet", 
+      date: "2026-03-29", 
+      excerpt: "Deep dive research into Freenet for 6G network readiness. Core score: 6.5/6.0", 
+      links: [{"platform": "X Article", "url": "https://x.com/joel_automate"}], 
+      type: "article" as ResearchType, 
+      readTime: "6 min read" 
+    },
+    { 
+      title: "DePIN Analysis: Gridless", 
+      date: "2026-03-29", 
+      excerpt: "Deep dive research into Gridless for 6G network readiness. Core score: 6.5/6.0", 
+      links: [{"platform": "X Article", "url": "https://x.com/joel_automate"}], 
+      type: "article" as ResearchType, 
+      readTime: "6 min read" 
+    },
+    { 
+      title: "DePIN Analysis: World Mobile", 
+      date: "2026-03-29", 
+      excerpt: "Deep dive research into World Mobile for 6G network readiness. Core score: 5.5/6.0", 
+      links: [{"platform": "X Article", "url": "https://x.com/joel_automate"}], 
+      type: "article" as ResearchType, 
+      readTime: "6 min read" 
+    },
+    { 
+      title: "DePIN Analysis: Nodle", 
+      date: "2026-03-29", 
+      excerpt: "Deep dive research into Nodle for 6G network readiness. Core score: 6.5/6.0", 
+      links: [{"platform": "X Article", "url": "https://x.com/joel_automate"}], 
+      type: "article" as ResearchType, 
+      readTime: "6 min read" 
+    },
+    { 
+      title: "DePIN Analysis: Render", 
+      date: "2026-03-29", 
+      excerpt: "Deep dive research into Render for 6G network readiness. Core score: 9.0/6.0", 
+      links: [{"platform": "X Article", "url": "https://x.com/joel_automate"}], 
+      type: "article" as ResearchType, 
+      readTime: "6 min read" 
+    },
+    { 
+      title: "DePIN Analysis: Helium", 
+      date: "2026-03-29", 
+      excerpt: "Deep dive research into Helium for 6G network readiness. Core score: 8.5/6.0", 
+      links: [{"platform": "X Article", "url": "https://x.com/joel_automate"}], 
+      type: "article" as ResearchType, 
+      readTime: "6 min read" 
+    },
+    { 
       title: "I Got Access to NVIDIA's 6G Simulation Platform — Here Is What It Means for DePIN", 
       date: "2026-03-01", 
       excerpt: "Exploring the intersection of NVIDIA's 6G research and the future of decentralized physical infrastructure networks.", 
