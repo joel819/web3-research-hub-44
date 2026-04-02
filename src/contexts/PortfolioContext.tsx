@@ -105,6 +105,14 @@ export const defaultData = {
   ],
   research: [
     { 
+      title: "DePIN Analysis: NKN", 
+      date: "2026-04-02", 
+      excerpt: "Deep dive research into NKN for 6G network readiness. Core score: 4.5/6.0", 
+      links: [{"platform": "X Article", "url": "https://x.com/joel_automate"}], 
+      type: "article" as ResearchType, 
+      readTime: "6 min read" 
+    },
+    { 
       title: "DePIN Analysis: Civic Connect", 
       date: "2026-03-31", 
       excerpt: "Deep dive research into Civic Connect for 6G network readiness. Core score: 4.5/6.0", 
