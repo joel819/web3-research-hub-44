@@ -23,7 +23,7 @@ const Index = () => {
   const [researchFilter, setResearchFilter] = useState<FilterType>("all");
 
   useEffect(() => {
-    document.title = "Joel Oyewole — Web3 Researcher & DePIN Tool Builder";
+    document.title = "Web3 Research Hub";
   }, []);
 
   const noop = () => {};
@@ -33,26 +33,15 @@ const Index = () => {
       <Navbar name={data.name} />
 
 
-      {/* Hero */}
-      <HeroSection
-        data={{
-          name: data.name, bio: data.bio, roles: data.roles,
-          twitter: data.twitter, linkedin: data.linkedin, reddit: data.reddit, github: data.github,
-        }}
-        isEditing={false}
-        onUpdate={noop}
-      />
 
-      <StatsBar stats={data.stats} onStatChange={noop} isEditing={false} />
-      <ProcessSection steps={data.processSteps} isEditing={false} onUpdate={noop} />
 
       {/* Tools */}
       <section id="tools" className="section-padding">
         <div className="max-w-6xl mx-auto px-6">
           <ScrollReveal>
             <div className="text-center mb-16">
-              <p className="text-sm text-primary font-mono uppercase tracking-widest mb-3">Portfolio</p>
-              <h2 className="text-3xl md:text-4xl font-bold font-display text-foreground">Tools I Built</h2>
+              <p className="text-sm text-primary font-mono uppercase tracking-widest mb-3">DePIN Hub</p>
+              <h2 className="text-3xl md:text-4xl font-bold font-display text-foreground">Research Tools</h2>
             </div>
           </ScrollReveal>
           <div className="grid md:grid-cols-2 gap-6">
@@ -87,9 +76,9 @@ const Index = () => {
         <div className="max-w-4xl mx-auto px-6">
           <ScrollReveal>
             <div className="text-center mb-10">
-              <p className="text-sm text-primary font-mono uppercase tracking-widest mb-3">Publications</p>
-              <h2 className="text-3xl md:text-4xl font-bold font-display text-foreground">Research & Writing</h2>
-              <p className="text-muted-foreground text-sm mt-3 max-w-xl mx-auto">Long-form articles, research reports, and curated threads.</p>
+              <p className="text-sm text-primary font-mono uppercase tracking-widest mb-3">DePIN Agent</p>
+              <h2 className="text-3xl md:text-4xl font-bold font-display text-foreground">Research Reports</h2>
+              <p className="text-muted-foreground text-sm mt-3 max-w-xl mx-auto">Automated 6G and DePIN infrastructure reports.</p>
             </div>
           </ScrollReveal>
 
@@ -135,13 +124,7 @@ const Index = () => {
         </div>
       </section>
 
-      <EcosystemsSection ecosystems={data.ecosystems} />
-      <OpenToSection collabs={data.collabs} isEditing={false} onUpdate={noop} />
-      <ContactSection
-        contactText={data.contactText} contactEmail={data.contactEmail}
-        contactTwitter={data.contactTwitter} contactLinkedin={data.contactLinkedin}
-        isEditing={false} onUpdate={noop}
-      />
+
       <Footer name={data.name} since={data.since} twitter={data.twitter} linkedin={data.linkedin} github={data.github} />
     </div>
   );

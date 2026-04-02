@@ -4,21 +4,21 @@ import ProcessSection from "@/components/ProcessSection";
 import EcosystemsSection from "@/components/EcosystemsSection";
 import OpenToSection from "@/components/OpenToSection";
 
-export const STORAGE_KEY = "web3-portfolio-v4";
+export const STORAGE_KEY = "web3-research-hub-v1";
 
 export const defaultData = {
-  name: "Joel Oyewole",
-  bio: "Web3 researcher and DePIN tool builder. NVIDIA 6G Developer Program member. I research early Web3 projects, score DePIN infrastructure on 6G readiness, and build automation tools. Building everything publicly.",
-  roles: ["Web3 Researcher", "DePIN Tool Builder", "Automation Engineer"],
-  twitter: "https://x.com/joel_automate",
-  linkedin: "https://linkedin.com/in/joel-oyewole-51b614125",
-  reddit: "https://reddit.com/user/web30psJoel",
-  github: "https://github.com/joel819",
+  name: "Web3 Research Hub",
+  bio: "A public, automated hub tracking the future of decentralized infrastructure, DePIN, and Web3 ecosystem changes. Automated tools analyzing whitepapers, projects, and 6G readiness.",
+  roles: ["DePIN Research", "Decentralized Infrastructure", "Web3 Automation"],
+  twitter: "",
+  linkedin: "",
+  reddit: "",
+  github: "",
   stats: [
     { label: "Projects Researched", value: "15+" },
-    { label: "Tools Built", value: "8" },
-    { label: "Weeks Building in Public", value: "7" },
-    { label: "Posts Published", value: "330+" },
+    { label: "Tools Tracked", value: "8" },
+    { label: "Automated Updates", value: "24/7" },
+    { label: "Reports Generated", value: "330+" },
   ],
   processSteps: ProcessSection.defaultSteps,
   tools: [
@@ -234,9 +234,9 @@ export const defaultData = {
     { icon: "grant", title: "Grant Funded Research", description: "Seeking grants to continue research into DePIN infrastructure and 6G network performance simulation." },
   ],
   contactText: "I'm always interested in connecting with teams building meaningful infrastructure in Web3. Whether you need DePIN research, custom tooling, or an automation partner — let's talk.",
-  contactEmail: "joeloyewole13@gmail.com",
-  contactTwitter: "https://x.com/joel_automate",
-  contactLinkedin: "https://linkedin.com/in/joel-oyewole-51b614125",
+  contactEmail: "",
+  contactTwitter: "",
+  contactLinkedin: "",
   since: "2024",
 };
 
